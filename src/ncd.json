@@ -1,0 +1,371 @@
+{
+  "hypertension_drugs": [
+    {
+      "group": "ACEi",
+      "name": "Enalapril",
+      "description": "5/20 mg (1 B)",
+      "initial_dose": "2.5-5mg",
+      "max_dose": "40mg/2"
+    },
+    {
+      "group": "ARB",
+      "name": "Losartan",
+      "trade_name": "LORANTA",
+      "description": "50/100 mg (1.5 B)",
+      "initial_dose": "50mg",
+      "max_dose": "100mg"
+    },
+    {
+      "group": "ARB",
+      "name": "Azilsartan",
+      "trade_name": "EDARBI",
+      "description": "40 mg (22 B)",
+      "initial_dose": "40mg",
+      "max_dose": "80mg"
+    },
+    {
+      "group": "CCB-D",
+      "name": "amLODIPine",
+      "description": "5/10 mg (1-1.5 B)",
+      "initial_dose": "5mg",
+      "max_dose": "10mg"
+    },
+    {
+      "group": "CCB-D",
+      "name": "Manidipine",
+      "description": "(10/)20 mg (3 B)",
+      "initial_dose": "5-10mg",
+      "max_dose": "20mg*1"
+    },
+    {
+      "group": "CCB-D",
+      "name": "Lercanidipine",
+      "description": "20 mg (4 B)",
+      "initial_dose": "5mg",
+      "max_dose": "20mg*1"
+    },
+    {
+      "group": "ARB+D",
+      "name": "Azilsartan & Chlorthalidone",
+      "trade_name": "EDARBYCLOR",
+      "description": "40/12.5 mg (22.5 B)"
+    },
+    {
+      "group": "D",
+      "name": "hydroCHLOROthiazide",
+      "description": "25/50 mg",
+      "initial_dose": "12.5mg",
+      "max_dose": "50mg"
+    },
+    {
+      "group": "D",
+      "name": "Spironolactone",
+      "description": "25/100 mg",
+      "initial_dose": "25mg",
+      "max_dose": "100mg/2"
+    },
+    {
+      "group": "BB",
+      "name": "Carvedilol",
+      "trade_name": "CARATEN",
+      "description": "non-selective & vasodilator property; 6.25/25 mg",
+      "initial_dose": "6.25mg*2",
+      "max_dose": "25mg*2"
+    },
+    {
+      "group": "BB",
+      "name": "Metoprolol Tartrate",
+      "trade_name": "CARDELOC",
+      "description": "selective beta-1, immediate release; 100 mg",
+      "initial_dose": "50mg*2",
+      "max_dose": "400mg",
+      "available": false
+    },
+    {
+      "group": "AB",
+      "name": "Doxazosin",
+      "trade_name": "CARXASIN",
+      "description": "longer-acting; 2/4 mg",
+      "initial_dose": "1mg",
+      "max_dose": "4mg"
+    },
+    {
+      "name": "hydrALAZINE",
+      "trade_name": "CESOLINE",
+      "description": "25 mg",
+      "initial_dose": "10mg*4",
+      "max_dose": "50mg*4"
+    }
+  ],
+  "dyslipidemia_drugs": [
+    {
+      "name": "Atorvastatin",
+      "trade_name": "LIPOSTAT, XARATOR",
+      "description": "10/40 mg (3.25 B)",
+      "dosage": "10-80mg"
+    },
+    {
+      "name": "Simvastatin",
+      "trade_name": "BESTATIN",
+      "description": "10/40 mg (1-1.5 B)",
+      "dosage": "10-40mg"
+    },
+    {
+      "name": "Rosuvastatin",
+      "trade_name": "VIVACOR",
+      "description": "10 mg (X-NLEM; 5.25-6.25 B)",
+      "dosage": "5-20mg"
+    },
+    {
+      "name": "Ezetimibe",
+      "description": "10 mg (X-NLEM; 20.5 B)",
+      "dosage": "10mg"
+    },
+    {
+      "name": "Fenofibrate",
+      "description": "ควรรับประทานพร้อมอาหาร; 200/100 mg (ค; 5.25/4 B)",
+      "dosage": "1 cap"
+    },
+    {
+      "name": "Gemfibrozil",
+      "description": "ไม่แนะนำให้ใช้ร่วมกับ statin; 300/600 mg (ก; 1.5 B)",
+      "dosage": "600-1200mg"
+    }
+  ],
+  "diabetes_drugs": [
+    {
+      "name": "metFORMIN",
+      "description": "500 mg (1 B)",
+      "dosage": "1x1 > 2-1-2"
+    },
+    {
+      "group": "SU",
+      "name": "glipiZIDE",
+      "description": "5 mg (1 B)",
+      "dosage": "0.5x1 > 2x2"
+    },
+    {
+      "group": "SU",
+      "name": "Glimepiride",
+      "trade_name": "AMARYL",
+      "description": "4 mg (X-NLEM; 9 B)",
+      "dosage": "1-4mg*1"
+    },
+    {
+      "group": "TZD",
+      "name": "Pioglitazone",
+      "trade_name": "UTMOS",
+      "description": "30 mg (ง; 1.5 B)",
+      "dosage": "0.5x1 > 1.5x1"
+    },
+    {
+      "group": "DPP4i",
+      "name": "Teneligliptin",
+      "trade_name": "TENELIA",
+      "description": "20 mg (X-NLEM; 23 B)"
+    },
+    {
+      "group": "GLP1a",
+      "name": "Dulaglutide",
+      "description": "30 mg (1532 B)"
+    },
+    {
+      "group": "GLP1a",
+      "name": "Semaglutide",
+      "description": "7/14 mg (231-250 B)"
+    },
+    {
+      "group": "SGLT2i",
+      "name": "Empaglifozin",
+      "trade_name": "JARDIANCE",
+      "description": "25 mg (82 B)"
+    },
+    {
+      "group": "Insulin",
+      "name": "RI",
+      "trade_name": "ACTRAPID",
+      "description": "1000 U/104 B"
+    },
+    {
+      "group": "Insulin",
+      "name": "NPH",
+      "trade_name": "INSULATARD",
+      "description": "1000 U/91 B",
+      "dosage": "start 0.1-0.2 u/kg hs"
+    },
+    {
+      "group": "Insulin",
+      "name": "Glargine",
+      "trade_name": "TOUJEO",
+      "description": "X-NLEM; 450 U/842 B"
+    },
+    {
+      "group": "Insulin",
+      "name": "NovoRAPID",
+      "description": "ก; 300 U/376 B"
+    },
+    {
+      "group": "Insulin",
+      "name": "Mixtard",
+      "description": "ก; 95 B"
+    },
+    {
+      "group": "Insulin",
+      "name": "NovoMIX",
+      "description": "ก; 300 U/373 B"
+    },
+    {
+      "group": "Insulin",
+      "name": "Ryzodeg",
+      "description": "300 U/897 B"
+    }
+  ],
+  "ldl_targets": [
+    "Adult, LDL >=190 => Target <100 and 50% reduction",
+    "Adult, but 10-year risk >=10% => Target <100 and 30% reduction",
+    "Adult, but subclinical risk factors => Target <100 and 30% reduction",
+    "Familial hypercholesterolemia => Target <70 and 50% reduction",
+    "DM, >=40 yr, 0-1 risk factors, LDL <190 => Target <100 and 30% reduction, TG <150",
+    "DM, >=40 yr, 0-1 risk factors, LDL >=190 => Target <100 and 50% reduction, TG <150",
+    "DM, >=40 yr, >=2 risk factors => Target <70 and 50% reduction, TG <150",
+    "DM, <40 yr => Target <100 after 3-6 months of lifestyle changes",
+    "CKD G3a-5ND => Target <100 or 30% reduction",
+    "ACS => Target <55 and 50% reduction",
+    "CCS => Target <70 and 50% reduction",
+    "Non-cardioembolic stroke => Target <100",
+    "Non-cardioembolic stroke with atherosclerotic disease => Target <70"
+  ],
+  "history": [
+    "Snoring",
+    "Gestational hypertension",
+    "Anti-inflammatory drug use",
+    "Herbal drug use",
+    "Illicit drug use",
+    "Exertional chest pain",
+    "Occasional blurred vision",
+    "Nocturia",
+    "Salty diet",
+    "Sugary diet"
+  ],
+  "lifestyle_modifications": [
+    {
+      "id": "advice_weight",
+      "for": "HT DLP",
+      "title": "Weight reduction",
+      "description": "In overweight and obese individual; Target BMI 18.5-22.9 kg/m^2. Target waist circumference <90 cm (M) or <80 cm (W) or Ht/2."
+    },
+    {
+      "id": "advice_diet",
+      "for": "HT DLP",
+      "title": "Regular consumption of healthy foods",
+      "description": "ข้าว 2 : ผัก 1 : เนื้อสัตว์ไม่ติดมัน 1 + ผลไม้หวานน้อย"
+    },
+    {
+      "id": "advice_salt",
+      "for": "HT",
+      "title": "Limiting salt and sodium in food",
+      "description": "WHO กำหนดปริมาณโซเดียมไม่เกิน 2 g/day = NaCl 1 teaspoon = Fish sauce/MSG 4 teaspoon"
+    },
+    {
+      "id": "advice_fatty_diet",
+      "for": "LDL",
+      "title": "Limiting saturated fatty acid in food",
+      "description": "ลดการบริโภคพลังงานจากไขมันที่มีกรดไขมันอิ่มตัวสูง เช่น ไขมันสัตว์ น้ำมันหมู น้ำมัน ปาล์ม น้ำมันมะพร้าว เนย / เปลี่ยนเป็นน้ำมันมะกอก น้ำมันรำข้าว น้ำมันถั่วเหลือง เป็นต้น"
+    },
+    {
+      "id": "advice_carbohydrate",
+      "for": "TG",
+      "title": "Limiting carbohydrate",
+      "description": "ลดการบริโภคอาหารกลุ่มคาร์โบไฮเดรต / ลดการบริโภคน้ำตาลลงให้ไม่เกินร้อยละ 10 ของพลังงานที่บริโภคต่อวัน",
+      "checked": false
+    },
+    {
+      "id": "advice_alcohol",
+      "for": "HT TG",
+      "title": "Limiting alcoholic beverages",
+      "description": "ถ้าดื่มอยู่แล้วควรจำกัดปริมาณ ไม่เกิน 1-2 หน่วย/วัน (1 standard drink = 10 g alcohol)",
+      "checked": false
+    },
+    {
+      "id": "advice_exercise",
+      "for": "HT DLP",
+      "title": "Increasing regular physical activity and/or aerobic exercise",
+      "description": "ควรออกกำลังกายแบบแอโรบิก อย่างน้อยสัปดาห์ละ 5 วัน: ปานกลาง 150 min/week หรือ หนักมาก 75-90 min/week, ไม่ควร isometric exercise เช่นยกน้ำหนัก ถ้ายังไม่รักษา/ความดันสูงมาก/etc."
+    },
+    {
+      "id": "smoking",
+      "for": "HT DLP",
+      "title": "Stop Smoking",
+      "description": "ช่วยลด CV risk, รับคำแนะนำ โทรสายด่วนเลิกบุหรี่ 1600",
+      "checked": false
+    }
+  ],
+  "investigations": [
+    {
+      "name": "CBC, Electrolytes",
+      "description": "q 1 year",
+      "ask_history": true
+    },
+    {
+      "name": "Uric acid, Ca, PO4",
+      "description": "q 1 year; for CKD or diuretic",
+      "ask_history": true
+    },
+    {
+      "name": "Creatinine & eGFR",
+      "description": "q 1 year or 3-6 months for CKD",
+      "ask_history": true
+    },
+    {
+      "name": "Creatinine + K",
+      "description": "for ACEi, ARB, diuretic"
+    },
+    {
+      "name": "Fasting blood sugar"
+    },
+    {
+      "name": "HbA1c"
+    },
+    {
+      "name": "Lipid profile"
+    },
+    {
+      "name": "AST, ALT",
+      "description": "for statin, pioglitazone",
+      "ask_history": true
+    },
+    {
+      "name": "Urinalysis",
+      "description": "for HT; UPCR if positive",
+      "ask_history": true
+    },
+    {
+      "name": "Urine microalbumin",
+      "description": "for DM; UPCR if positive"
+    },
+    {
+      "name": "Electrocardiogram",
+      "ask_history": true
+    },
+    {
+      "name": "Chest x-ray",
+      "description": "check-up q 1-3 years"
+    },
+    {
+      "name": "Ankle-brachial index"
+    },
+    {
+      "name": "Eye exam",
+      "description": "q 1 year; for DM or severe HT",
+      "ask_history": true
+    },
+    {
+      "name": "Dental exam",
+      "description": "q 1 year; for DM"
+    },
+    {
+      "name": "Foot exam",
+      "description": "q 1 year; for DM"
+    }
+  ]
+}
