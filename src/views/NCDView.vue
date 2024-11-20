@@ -406,11 +406,12 @@ const cvRisk = computed(() =>
       <FormSection>
         <template #title>Dyslipidemia</template>
         <template #description>
-          <p>
-            <a href="https://www.rama.mahidol.ac.th/cardio_vascular_risk/thai_cv_risk_score/"
-              >Thai CV risk score</a
-            >
-          </p>
+          <a
+            href="https://www.rama.mahidol.ac.th/cardio_vascular_risk/thai_cv_risk_score/"
+            target="_blank"
+            class="block text-cyan-700"
+            >Thai CV risk score</a
+          >
           <AssetModal
             class="block"
             :src="['/dlp-target-primary.png', '/dlp-target-dm.png', '/dlp-target-ckd.png']"
@@ -425,10 +426,13 @@ const cvRisk = computed(() =>
               or xanthoma. Look for secondary causes e.g. nephrotic syndrome, hypothyroidism,
               Cushing syndrome.
             </p>
-            <p>Check AST, ALT before initiating statin. Hold statin if AST, ALT > 3x UNL.</p>
             <p>
-              Use fasting lipid profile before initiating primary prevention, suspected genetic
-              dyslipidemia, or TG>400.
+              Check AST, ALT before initiating statin. Check LDL-C, AST, ALT at 4-6 weeks after
+              initiating statin, then every 1 year. Hold statin if AST, ALT > 3x UNL.
+            </p>
+            <p>
+              Use fasting lipid profile before initiating primary prevention, in case of suspected
+              genetic dyslipidemia, or TG>400.
             </p>
             <AssetModal class="block" src="/dlp-statin-intensity.png">Statin intensity</AssetModal>
             <AssetModal class="block" :src="['/dlp-drugs-1.png', '/dlp-drugs-2.png']"
@@ -488,7 +492,7 @@ const cvRisk = computed(() =>
               />
             </div>
             <div class="text-sm/6">
-              <label for="myopathy" class="font-medium text-gray-900">Myalgia/weakness</label>
+              <label for="myopathy" class="font-medium text-gray-900">Myalgia/weakness/cramp</label>
             </div>
           </div>
           <p class="col-span-6 text-red-500" v-if="form.myopathy">

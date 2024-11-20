@@ -107,7 +107,7 @@
     {
       "name": "Simvastatin",
       "trade_name": "BESTATIN",
-      "description": "10/40 mg (1-1.5 B)",
+      "description": "10/40 mg (1-1.5 B); ไม่ใช้ร่วมกับยาต้านเชื้อรากลุ่ม -conazole, Erythromycin, Clarithromycin,      Gemfibrozil; ไม่ใช้เกิน 20 mg ร่วมกับ Amlodipine",
       "dosage": "10-40mg"
     },
     {
@@ -327,7 +327,8 @@
       "name": "HbA1c"
     },
     {
-      "name": "Lipid profile"
+      "name": "Lipid profile",
+      "description": "q 1 year"
     },
     {
       "name": "AST, ALT",
