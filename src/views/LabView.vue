@@ -6,7 +6,7 @@ import Label from '@/components/Label.vue'
 const patientId = ref('')
 const labs = [
   { id: '700', checked: true, name: 'Glucose' },
-  { id: '828', checked: true, name: 'A1C' },
+  { id: '828', checked: true, name: 'HbA1c' },
   { id: '705', checked: true, name: 'eGFR' },
   { id: '727', checked: true, name: 'LDL' },
   { id: '725', checked: false, name: 'Total cholesterol' },
