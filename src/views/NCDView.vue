@@ -93,13 +93,13 @@ const cvRisk = computed(() =>
 
 <template>
   <main>
-    <header class="bg-white shadow">
-      <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">NCDs OPD Kit</h2>
+    <header class="bg-white shadow print:shadow-none">
+      <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 print:max-w-full print:p-0">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">NCDs Care Checklist</h2>
       </div>
     </header>
 
-    <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8 print:max-w-full print:p-0">
       <FormSection>
         <template #title>General</template>
         <template #description>
@@ -175,7 +175,11 @@ const cvRisk = computed(() =>
               v-model="form.note_general"
             ></textarea>
           </div>
-          <div v-for="hx in history" class="col-span-2 relative flex gap-x-3 items-center">
+          <div
+            v-for="hx in history"
+            v-show="hx.title != 'Gestational hypertension' || form.sex != '1'"
+            class="col-span-2 relative flex gap-x-3 items-center"
+          >
             <div class="flex h-6 items-center">
               <input
                 :id="hx.title"
@@ -359,7 +363,11 @@ const cvRisk = computed(() =>
                   </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                  <tr v-for="drug in hypertension_drugs" :key="drug.name">
+                  <tr
+                    v-for="drug in hypertension_drugs"
+                    :key="drug.name"
+                    :class="{ 'print:hidden': drug.previous_dose == '' && drug.new_dose == '' }"
+                  >
                     <td class="px-2 py-1 text-center">
                       <input
                         disabled
@@ -570,7 +578,11 @@ const cvRisk = computed(() =>
                   </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                  <tr v-for="drug in dyslipidemia_drugs" :key="drug.name">
+                  <tr
+                    v-for="drug in dyslipidemia_drugs"
+                    :key="drug.name"
+                    :class="{ 'print:hidden': drug.previous_dose == '' && drug.new_dose == '' }"
+                  >
                     <td class="px-2 py-1 text-center">
                       <input
                         disabled
@@ -743,7 +755,11 @@ const cvRisk = computed(() =>
                   </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                  <tr v-for="drug in diabetes_drugs" :key="drug.name">
+                  <tr
+                    v-for="drug in diabetes_drugs"
+                    :key="drug.name"
+                    :class="{ 'print:hidden': drug.previous_dose == '' && drug.new_dose == '' }"
+                  >
                     <td class="px-2 py-1 text-center">
                       <input
                         disabled
@@ -829,7 +845,11 @@ const cvRisk = computed(() =>
       <FormSection>
         <template #title>Lifestyle modifications</template>
         <template #form>
-          <div v-for="item in lifestyle_modifications" class="col-span-6">
+          <div
+            v-for="item in lifestyle_modifications"
+            class="col-span-6"
+            :class="{ 'print:hidden': !item.checked }"
+          >
             <div class="relative flex gap-x-3 items-center">
               <div class="flex items-center">
                 <input
@@ -847,7 +867,7 @@ const cvRisk = computed(() =>
                     >{{ item.for }}</span
                   >{{ item.title }}</label
                 >
-                <p class="text-gray-500">{{ item.description }}</p>
+                <p class="text-gray-500 print:hidden">{{ item.description }}</p>
               </div>
             </div>
           </div>
@@ -858,20 +878,22 @@ const cvRisk = computed(() =>
         <template #title>Investigations</template>
         <template #form>
           <div class="col-span-6">
-            <div v-for="(item, i) in investigations">
-              <div class="relative flex gap-x-3 items-center">
-                <div class="flex items-center">
-                  <input
-                    :id="'investigation-' + i"
-                    v-model="item.checked"
-                    type="checkbox"
-                    class="size-4 rounded border-gray-300 text-green-600 focus:ring-green-600"
-                  />
-                </div>
-                <div class="text-sm/6">
-                  <label :for="'investigation-' + i" class="font-medium"> {{ item.name }}</label>
-                  <span class="ml-2 text-gray-500">{{ item.description }}</span>
-                </div>
+            <div
+              v-for="(item, i) in investigations"
+              class="relative flex gap-x-3 items-center"
+              :class="{ 'print:hidden': !item.checked }"
+            >
+              <div class="flex items-center">
+                <input
+                  :id="'investigation-' + i"
+                  v-model="item.checked"
+                  type="checkbox"
+                  class="size-4 rounded border-gray-300 text-green-600 focus:ring-green-600"
+                />
+              </div>
+              <div class="text-sm/6">
+                <label :for="'investigation-' + i" class="font-medium"> {{ item.name }}</label>
+                <span class="ml-2 text-gray-500">{{ item.description }}</span>
               </div>
             </div>
           </div>
@@ -879,7 +901,7 @@ const cvRisk = computed(() =>
       </FormSection>
       <SectionBorder />
       <!-- Display in text format for copying into EMR program -->
-      <FormSection>
+      <FormSection class="print:hidden">
         <template #title>
           <span
             class="px-0.5 mr-1 text-sm text-green-600 outline outline-1 outline-green-600 rounded"
@@ -1036,8 +1058,8 @@ const cvRisk = computed(() =>
           </div>
         </template>
       </FormSection>
-      <SectionBorder />
-      <FormSection>
+      <SectionBorder class="print:hidden" />
+      <FormSection class="print:hidden">
         <template #title>
           <span
             class="px-0.5 mr-1 text-sm text-green-600 outline outline-1 outline-green-600 rounded"
@@ -1054,8 +1076,8 @@ const cvRisk = computed(() =>
           </div>
         </template>
       </FormSection>
-      <SectionBorder />
-      <FormSection>
+      <SectionBorder class="print:hidden" />
+      <FormSection class="print:hidden">
         <template #title>
           <span
             class="px-0.5 mr-1 text-sm text-green-600 outline outline-1 outline-green-600 rounded"

@@ -7,7 +7,7 @@ const openMobileNav = ref(false)
 
 <template>
   <div class="min-h-screen bg-gray-100">
-    <div class="bg-white">
+    <div class="bg-white print:hidden">
       <nav
         class="mx-auto max-w-7xl flex items-center justify-between p-6 lg:px-8"
         aria-label="Global"
@@ -106,6 +106,6 @@ const openMobileNav = ref(false)
     </div>
 
     <RouterView />
-    <p class="py-6 text-center text-xs text-gray-400">Created with ❤ by Keen</p>
+    <p class="py-4 text-center text-xs text-gray-400 print:hidden">Created with ❤ by Keen</p>
   </div>
 </template>
