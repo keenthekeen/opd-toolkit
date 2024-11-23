@@ -221,13 +221,13 @@
     }
   ],
   "ldl_targets": [
-    "Adult, LDL >=190 => Target <100 and 50% reduction",
-    "Adult, but 10-year risk >=10% => Target <100 and 30% reduction",
+    "Adult, LDL ≥190 => Target <100 and 50% reduction",
+    "Adult, but 10-year risk ≥10% => Target <100 and 30% reduction",
     "Adult, but subclinical risk factors => Target <100 and 30% reduction",
     "Familial hypercholesterolemia => Target <70 and 50% reduction",
-    "DM, >=40 yr, 0-1 risk factors, LDL <190 => Target <100 and 30% reduction, TG <150",
-    "DM, >=40 yr, 0-1 risk factors, LDL >=190 => Target <100 and 50% reduction, TG <150",
-    "DM, >=40 yr, >=2 risk factors => Target <70 and 50% reduction, TG <150",
+    "DM, ≥40 yr, 0-1 risk factors, LDL <190 => Target <100 and 30% reduction, TG <150",
+    "DM, ≥40 yr, 0-1 risk factors, LDL ≥190 => Target <100 and 50% reduction, TG <150",
+    "DM, ≥40 yr, ≥2 risk factors => Target <70 and 50% reduction, TG <150",
     "DM, <40 yr => Target <100 after 3-6 months of lifestyle changes",
     "CKD G3a-5ND => Target <100 or 30% reduction",
     "ACS => Target <55 and 50% reduction",
@@ -377,15 +377,15 @@
   "vaccines": [
     {
       "name": "Influenza",
-      "description": "all individuals or >=65 years old; every year"
+      "description": "all individuals or ≥65 years old; every year"
     },
     {
       "name": "Pneumococcal",
-      "description": ">=65 years; 1 dose of PCV13 then PPSV23 after 1 year"
+      "description": "≥65 years; 1 dose of PCV13 then PPSV23 after 1 year"
     },
     {
       "name": "Zoster",
-      "description": ">=50 years (CDC) or >=60 years (DDC); Shingrix (subunit) 2 doses 2-6 months apart"
+      "description": "≥50 years (CDC) or ≥60 years (DDC); Shingrix (subunit) 2 doses 2-6 months apart"
     },
     {
       "name": "Td/Tdap",

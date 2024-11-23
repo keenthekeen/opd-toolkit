@@ -201,10 +201,9 @@ const importEmr = (data: {
       <FormSection>
         <template #title>General</template>
         <template #description>
-          <AssetModal class="block" src="/vaccine-adult.png">Vaccines for elderly</AssetModal>
           <p>Screening mammography every 1-2 years.</p>
           <p>
-            Screening BMD in all women ≥65 years old, men >=70 years old, fragility fracture, etc.
+            Screening BMD in all women ≥65 years old, men ≥70 years old, fragility fracture, etc.
           </p>
           <p>
             Annual low-dose chest CT scan screening for individuals ages 50 to 80 years with ≥20
@@ -214,7 +213,13 @@ const importEmr = (data: {
         <template #form>
           <div class="col-span-1">
             <Label for="age" value="Age (year)" />
-            <Input id="age" v-model="form.age" type="number" class="mt-1 w-full" />
+            <Input
+              id="age"
+              v-model="form.age"
+              type="number"
+              class="mt-1 w-full"
+              :class="{ 'outline outline-1 outline-red-500': !form.age }"
+            />
           </div>
           <div class="col-span-2">
             <Label for="sex" value="Sex" />
@@ -380,7 +385,13 @@ const importEmr = (data: {
           </div>
           <div class="col-span-2">
             <Label for="office_sbp" value="Office SBP (mmHg)" />
-            <Input id="office_sbp" v-model="form.office_sbp" type="number" class="mt-1 w-full" />
+            <Input
+              id="office_sbp"
+              v-model="form.office_sbp"
+              type="number"
+              class="mt-1 w-full"
+              :class="{ 'outline outline-1 outline-red-500': !form.office_sbp && !form.home_sbp }"
+            />
           </div>
           <div class="col-span-1">
             <Label for="office_dbp" value="Office DBP" />
@@ -578,6 +589,7 @@ const importEmr = (data: {
               v-model="form.total_cholesterol"
               type="number"
               class="mt-1 w-full"
+              :class="{ 'outline outline-1 outline-red-500': !form.total_cholesterol }"
             />
           </div>
           <div class="col-span-2">
@@ -944,6 +956,9 @@ const importEmr = (data: {
       <SectionBorder />
       <FormSection>
         <template #title>Vaccination</template>
+        <template #description>
+          <AssetModal class="block" src="/vaccine-adult.png">Vaccines for elderly</AssetModal>
+        </template>
         <template #form>
           <div class="col-span-6">
             <table class="w-full divide-y divide-gray-200">
@@ -975,7 +990,7 @@ const importEmr = (data: {
                     <input
                       v-model="item.checked"
                       type="checkbox"
-                      class="size-4 rounded border-gray-300 text-green-600"
+                      class="size-4 rounded border-gray-300 text-green-600 focus:ring-green-600"
                     />
                   </td>
                   <td class="px-2 py-1">
