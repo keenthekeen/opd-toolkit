@@ -17,7 +17,7 @@ const search = async () => {
       `http://localhost:8000/fetch-emr?patientId=${patientId.value}`,
     ).then((r) => r.json())
     if (response.sex) {
-      emit('import', response)
+      emit('import', { ...response, id: patientId.value })
       successMessage.value = 'Imported ' + response.name
       setTimeout(() => {
         successMessage.value = ''
@@ -31,10 +31,7 @@ const search = async () => {
   }
 }
 const debouncedSearch = debounce(search, 500)
-
-// watch search string
 watch(patientId, () => {
-  console.log('Inside watch')
   debouncedSearch()
 })
 </script>
@@ -61,7 +58,7 @@ watch(patientId, () => {
       <div class="mb-4 text-lg">Import EMR data</div>
       <div class="w-full print:hidden">
         <Label for="patientId" value="Patient ID" />
-        <Input id="patientId" v-model.trim="patientId" type="number" class="w-full" autofocus/>
+        <Input id="patientId" v-model.trim="patientId" type="number" class="w-full" autofocus />
         <p class="mt-2 text-xs text-gray-400">
           ไม่ใช่ HN; ดูจาก URL ที่หน้า "ประวัติการรักษา" e.g. 581135
         </p>

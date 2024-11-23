@@ -25,6 +25,30 @@ router.get('/fetch-emr', async (context) => {
   context.response.body = result
 })
 
+router.get('/lab-chart', async (context) => {
+  const url = new URL(context.request.url)
+  const patientId = url.searchParams.get('patientId')
+  const labCodeId = url.searchParams.get('labCodeId')
+  if (!patientId || !labCodeId) {
+    context.response.status = 400
+    context.response.body = { error: 'patientId and labCodeId are required' }
+    return
+  }
+  console.log('Loading lab chart for patientId: ', patientId, 'labCodeId: ', labCodeId)
+  const resp = await fetch(
+    `http://192.168.254.90/emrbidi/lab/main/labGraphCmp.php?patientId=${patientId}&labCodeId=${labCodeId}&labCountPerLabGraphCmp=13&curPage=1&pageAll=1`,
+    {
+      headers: {
+        accept: 'image/apng,image/*',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko',
+      },
+    },
+  )
+  context.response.status = resp.status
+  context.response.headers.set('Content-Type', resp.headers.get('Content-Type') ?? '')
+  context.response.body = await resp.arrayBuffer()
+})
+
 const app = new Application()
 app.use(
   oakCors({

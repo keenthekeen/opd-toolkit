@@ -8,6 +8,7 @@ import { computed, reactive, ref } from 'vue'
 import STATIC from '@/ncd.json'
 import { calculateASCVDRiskToText } from '@/CVRiskFunction'
 import ImportEMRModal from '@/components/ImportEMRModal.vue'
+import LabChartGrid from '@/components/LabChartGrid.vue'
 
 const form = reactive({
   dx_dyslipidemia: true,
@@ -39,6 +40,7 @@ const form = reactive({
   fasting_glucose_when: '',
   hypoglycemic_symptoms: false,
 })
+const patientId = ref('')
 const history = ref(
   STATIC.history.map((item) => ({
     title: item,
@@ -98,6 +100,7 @@ const cvRisk = computed(() =>
   ),
 )
 const importEmr = (data: {
+  id: string
   name: string
   age: string
   sex: string
@@ -107,6 +110,7 @@ const importEmr = (data: {
   weight: string
   labs: { name: string; result: string; date: string }[]
 }) => {
+  patientId.value = data.id
   form.age = data.age
   form.sex = data.sex
   form.office_sbp = data.office_sbp
@@ -241,7 +245,7 @@ const importEmr = (data: {
             <Label for="weight" value="Weight (kg)" />
             <Input id="weight" v-model="form.weight" type="number" class="mt-1 w-full" />
           </div>
-          <div class="col-span-3">
+          <div class="col-span-2">
             <div class="relative flex gap-x-3 items-center">
               <div class="flex items-center">
                 <input
@@ -256,9 +260,6 @@ const importEmr = (data: {
               </div>
             </div>
           </div>
-          <div v-if="form.height && form.weight" class="col-span-3">
-            BMI {{ (Number(form.weight) / (Number(form.height) / 100) ** 2).toFixed(2) }}
-          </div>
           <div class="col-span-2 relative flex gap-x-3 items-center">
             <div class="flex h-6 items-center">
               <input
@@ -271,6 +272,9 @@ const importEmr = (data: {
             <div class="text-sm/6">
               <label for="smoking" class="font-medium text-gray-900">Smoking</label>
             </div>
+          </div>
+          <div v-if="form.height && form.weight" class="col-span-2 text-blue-500">
+            BMI {{ (Number(form.weight) / (Number(form.height) / 100) ** 2).toFixed(2) }}
           </div>
           <div class="col-span-full">
             <textarea
@@ -300,6 +304,17 @@ const importEmr = (data: {
         </template>
       </FormSection>
       <SectionBorder />
+      <template v-if="patientId">
+        <FormSection>
+          <template #title>Labs</template>
+          <template #form>
+            <div class="col-span-6">
+              <LabChartGrid :patientId="patientId" :noShadow="true" :useProxy="true" />
+            </div>
+          </template>
+        </FormSection>
+        <SectionBorder />
+      </template>
       <FormSection>
         <template #title>Hypertension</template>
         <template #description>
