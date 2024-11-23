@@ -7,6 +7,7 @@ import SectionBorder from '../components/SectionBorder.vue'
 import { computed, reactive, ref } from 'vue'
 import STATIC from '@/ncd.json'
 import { calculateASCVDRiskToText } from '@/CVRiskFunction'
+import ImportEMRModal from '@/components/ImportEMRModal.vue'
 
 const form = reactive({
   dx_dyslipidemia: true,
@@ -89,13 +90,103 @@ const cvRisk = computed(() =>
     Number(form.total_cholesterol),
   ),
 )
+const importEmr = (data: {
+  name: string
+  age: string
+  sex: string
+  office_sbp: string
+  office_dbp: string
+  height: string
+  weight: string
+  labs: { name: string; result: string; date: string }[]
+}) => {
+  form.age = data.age
+  form.sex = data.sex
+  form.office_sbp = data.office_sbp
+  form.office_dbp = data.office_dbp
+  form.height = data.height
+  form.weight = data.weight
+  data.labs.forEach((lab) => {
+    switch (lab.name) {
+      case 'Hemoglobin':
+        investigations.value = investigations.value.map((item) => {
+          if (item.name === 'CBC') {
+            item.result = 'Hb ' + lab.result
+            item.when = lab.date
+          }
+          return item
+        })
+        break
+      case 'HbA1c':
+        form.hba1c = lab.result
+        form.hba1c_when = lab.date
+        break
+      case 'Glucose':
+        form.fasting_glucose = lab.result
+        form.fasting_glucose_when = lab.date
+        break
+      case 'Creatinine':
+        investigations.value = investigations.value.map((item) => {
+          if (item.name === 'Creatinine & eGFR') {
+            item.result = (item.result ? item.result + ', ' : '') + 'Cr ' + lab.result
+            item.when = lab.date
+          }
+          return item
+        })
+        break
+      case 'eGFR':
+        investigations.value = investigations.value.map((item) => {
+          if (item.name === 'Creatinine & eGFR') {
+            item.result = (item.result ? item.result + ', ' : '') + 'eGFR ' + lab.result
+            item.when = lab.date
+          }
+          return item
+        })
+        break
+      case 'Total cholesterol':
+        form.total_cholesterol = lab.result
+        form.lipid_when = lab.date
+        break
+      case 'LDL':
+        form.ldl = lab.result
+        form.lipid_when = lab.date
+        break
+      case 'Potassium':
+        investigations.value = investigations.value.map((item) => {
+          if (item.name === 'Electrolytes') {
+            item.result = 'K ' + lab.result
+            item.when = lab.date
+          }
+          return item
+        })
+        break
+      default:
+        alert(`[Lab] ${lab.name} = ${lab.result} (${lab.date})`)
+    }
+    form.dx_diabetes = Boolean(form.hba1c && parseFloat(form.hba1c) > 6.5)
+    // Uncheck weight reduction advice if BMI < 23
+    lifestyle_modifications.value = lifestyle_modifications.value.map((item) => {
+      if (item.title === 'Weight reduction') {
+        item.checked = !(
+          form.weight &&
+          form.height &&
+          Number(form.weight) / (Number(form.height) / 100) ** 2 < 23
+        )
+      }
+      return item
+    })
+  })
+}
 </script>
 
 <template>
   <main>
     <header class="bg-white shadow print:shadow-none">
-      <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 print:max-w-full print:p-0">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">NCDs Care Checklist</h2>
+      <div class="flex max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 print:max-w-full print:p-0">
+        <h2 class="flex-auto font-semibold text-xl text-gray-800 leading-tight">
+          NCDs Care Checklist
+        </h2>
+        <ImportEMRModal @import="importEmr" />
       </div>
     </header>
 
@@ -1009,6 +1100,7 @@ const cvRisk = computed(() =>
             <template v-else-if="cvRisk.includes('%')">
               <p>====== ASCVD PREVENTION ======</p>
               <p>{{ cvRisk }}</p>
+              <p>{{ form.note_dyslipidemia }}</p>
             </template>
             <template v-if="form.dx_diabetes">
               <p>==== TYPE II DIABETES MELLITUS ====</p>

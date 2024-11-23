@@ -100,7 +100,7 @@
   "dyslipidemia_drugs": [
     {
       "name": "Atorvastatin",
-      "trade_name": "LIPOSTAT, XARATOR",
+      "trade_name": "CHLOVAS, LIPITOR",
       "description": "10/40 mg (3.25 B)",
       "dosage": "10-80mg"
     },
@@ -302,7 +302,12 @@
   ],
   "investigations": [
     {
-      "name": "CBC, Electrolytes",
+      "name": "CBC",
+      "description": "q 1 year",
+      "ask_history": true
+    },
+    {
+      "name": "Electrolytes",
       "description": "q 1 year",
       "ask_history": true
     },
