@@ -80,6 +80,13 @@ const investigations = ref(
     result: '',
   })),
 )
+const vaccines = ref(
+  STATIC.vaccines.map((item) => ({
+    ...item,
+    checked: false,
+    history: '',
+  })),
+)
 const cvRisk = computed(() =>
   calculateASCVDRiskToText(
     Number(form.age),
@@ -196,7 +203,9 @@ const importEmr = (data: {
         <template #description>
           <AssetModal class="block" src="/vaccine-adult.png">Vaccines for elderly</AssetModal>
           <p>Screening mammography every 1-2 years.</p>
-          <p>Screening BMD in all women ≥65 years old.</p>
+          <p>
+            Screening BMD in all women ≥65 years old, men >=70 years old, fragility fracture, etc.
+          </p>
           <p>
             Annual low-dose chest CT scan screening for individuals ages 50 to 80 years with ≥20
             pack-year smoking history.
@@ -934,6 +943,56 @@ const importEmr = (data: {
       </FormSection>
       <SectionBorder />
       <FormSection>
+        <template #title>Vaccination</template>
+        <template #form>
+          <div class="col-span-6">
+            <table class="w-full divide-y divide-gray-200">
+              <thead>
+                <tr>
+                  <th
+                    scope="col"
+                    class="px-2 pb-1 text-left text-xs font-medium text-gray-500 tracking-wider"
+                  >
+                    Order
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-2 pb-1 text-left text-xs font-medium text-gray-500 tracking-wider"
+                  >
+                    Item
+                  </th>
+                  <th
+                    scope="col"
+                    class="px-2 pb-1 text-left text-xs font-medium text-gray-500 tracking-wider cursor-pointer"
+                  >
+                    History
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <tr v-for="item in vaccines" :key="item.name">
+                  <td class="px-2 py-1 text-center">
+                    <input
+                      v-model="item.checked"
+                      type="checkbox"
+                      class="size-4 rounded border-gray-300 text-green-600"
+                    />
+                  </td>
+                  <td class="px-2 py-1">
+                    {{ item.name }}
+                    <p class="text-xs text-gray-400">{{ item.description }}</p>
+                  </td>
+                  <td class="px-2 py-1">
+                    <Input v-model="item.history" type="text" class="h-8 w-full" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </template>
+      </FormSection>
+      <SectionBorder />
+      <FormSection>
         <template #title>Lifestyle modifications</template>
         <template #form>
           <div
@@ -1147,6 +1206,14 @@ const importEmr = (data: {
                 </template>
               </ul>
             </template>
+            <template v-if="vaccines.filter((i) => i.history).length > 0">
+              <p>====== VACCINATIONS ======</p>
+              <ul>
+                <template v-for="item in vaccines">
+                  <li v-if="item.history">- {{ item.name }}: {{ item.history }}</li>
+                </template>
+              </ul>
+            </template>
           </div>
         </template>
       </FormSection>
@@ -1197,9 +1264,27 @@ const importEmr = (data: {
               </ul>
               <br />
             </template>
+            <template v-if="vaccines.filter((i) => i.checked).length > 0">
+              <p>Vaccine administration today:</p>
+              <ul>
+                <template v-for="item in vaccines">
+                  <li v-if="item.checked">- {{ item.name }} vaccine IM x 1 dose</li>
+                </template>
+              </ul>
+              <br />
+            </template>
             <p v-if="form.home_sbp">- Home BP measurement 1 week before next visit</p>
             <p v-if="form.dx_hypertension">- Advise observe hypotensive symptoms</p>
             <p v-if="form.dx_diabetes">- Advise observe hypoglycemic symptoms</p>
+            <p
+              v-if="
+                [...diabetes_drugs, ...hypertension_drugs, ...dyslipidemia_drugs].filter(
+                  (drug) => drug.new_dose,
+                ).length > 0
+              "
+            >
+              - Home medications as above; emphasize benefits of drug adherence
+            </p>
             <p>- F/U OPD Med</p>
           </div>
         </template>

@@ -373,5 +373,23 @@
       "name": "Foot exam",
       "description": "q 1 year; for DM"
     }
+  ],
+  "vaccines": [
+    {
+      "name": "Influenza",
+      "description": "all individuals or >=65 years old; every year"
+    },
+    {
+      "name": "Pneumococcal",
+      "description": ">=65 years; 1 dose of PCV13 then PPSV23 after 1 year"
+    },
+    {
+      "name": "Zoster",
+      "description": ">=50 years (CDC) or >=60 years (DDC); Shingrix (subunit) 2 doses 2-6 months apart"
+    },
+    {
+      "name": "Td/Tdap",
+      "description": "every 10 years"
+    }
   ]
 }
