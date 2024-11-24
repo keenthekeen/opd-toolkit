@@ -42,7 +42,8 @@
       "name": "Lercanidipine",
       "description": "20 mg (4 B)",
       "initial_dose": "5mg",
-      "max_dose": "20mg*1"
+      "max_dose": "20mg*1",
+      "available": false
     },
     {
       "group": "ARB+D",
@@ -71,6 +72,20 @@
       "description": "non-selective & vasodilator property; 6.25/25 mg",
       "initial_dose": "6.25mg*2",
       "max_dose": "25mg*2"
+    },
+    {
+      "group": "BB",
+      "name": "Atenolol",
+      "description": "Selective beta-1; 50 mg (ก, 0.5 B)",
+      "initial_dose": "25-50mg*1",
+      "max_dose": "100mg*1"
+    },
+    {
+      "group": "BB",
+      "name": "Bisoprolol",
+      "description": "Selective beta-1; 5 mg (X-NLEM, 2.25 B)",
+      "initial_dose": "5mg*1",
+      "max_dose": "10mg*1"
     },
     {
       "group": "BB",
