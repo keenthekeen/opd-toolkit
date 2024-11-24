@@ -5,7 +5,8 @@
       "name": "Enalapril",
       "description": "5/20 mg (1 B)",
       "initial_dose": "2.5-5mg",
-      "max_dose": "40mg/2"
+      "max_dose": "40mg/2",
+      "emr_code": "TEN1"
     },
     {
       "group": "ARB",
@@ -21,14 +22,16 @@
       "trade_name": "EDARBI",
       "description": "40 mg (22 B)",
       "initial_dose": "40mg",
-      "max_dose": "80mg"
+      "max_dose": "80mg",
+      "emr_code": "TEDARB"
     },
     {
       "group": "CCB-D",
       "name": "amLODIPine",
       "description": "5/10 mg (1-1.5 B)",
       "initial_dose": "5mg",
-      "max_dose": "10mg"
+      "max_dose": "10mg",
+      "emr_code": "TAMLO"
     },
     {
       "group": "CCB-D",
@@ -54,38 +57,43 @@
     {
       "group": "D",
       "name": "hydroCHLOROthiazide",
-      "description": "25/50 mg",
+      "description": "25 mg",
       "initial_dose": "12.5mg",
-      "max_dose": "50mg"
+      "max_dose": "50mg",
+      "emr_code": "THCT2"
     },
     {
       "group": "D",
       "name": "Spironolactone",
       "description": "25/100 mg",
       "initial_dose": "25mg",
-      "max_dose": "100mg/2"
+      "max_dose": "100mg/2",
+      "emr_code": "TALD2"
     },
     {
       "group": "BB",
       "name": "Carvedilol",
       "trade_name": "CARATEN",
-      "description": "non-selective & vasodilator property; 6.25/25 mg",
+      "description": "non-selective & vasodilator property; 6.25 mg",
       "initial_dose": "6.25mg*2",
-      "max_dose": "25mg*2"
+      "max_dose": "25mg*2",
+      "emr_code": "TDILA2"
     },
     {
       "group": "BB",
       "name": "Atenolol",
       "description": "Selective beta-1; 50 mg (ก, 0.5 B)",
       "initial_dose": "25-50mg*1",
-      "max_dose": "100mg*1"
+      "max_dose": "100mg*1",
+      "emr_code": "TATE1"
     },
     {
       "group": "BB",
       "name": "Bisoprolol",
       "description": "Selective beta-1; 5 mg (X-NLEM, 2.25 B)",
       "initial_dose": "5mg*1",
-      "max_dose": "10mg*1"
+      "max_dose": "10mg*1",
+      "emr_code": "TBISOP"
     },
     {
       "group": "BB",
@@ -109,21 +117,24 @@
       "trade_name": "CESOLINE",
       "description": "25 mg",
       "initial_dose": "10mg*4",
-      "max_dose": "50mg*4"
+      "max_dose": "50mg*4",
+      "emr_code": "TAPR2"
     }
   ],
   "dyslipidemia_drugs": [
     {
       "name": "Atorvastatin",
       "trade_name": "CHLOVAS, LIPITOR",
-      "description": "10/40 mg (3.25 B)",
-      "dosage": "10-80mg"
+      "description": "40 mg (3.25 B)",
+      "dosage": "10-80mg",
+      "emr_code": "NATORV"
     },
     {
       "name": "Simvastatin",
       "trade_name": "BESTATIN",
       "description": "10/40 mg (1-1.5 B); ไม่ใช้ร่วมกับยาต้านเชื้อรากลุ่ม -conazole, Erythromycin, Clarithromycin,      Gemfibrozil; ไม่ใช้เกิน 20 mg ร่วมกับ Amlodipine",
-      "dosage": "10-40mg"
+      "dosage": "10-40mg",
+      "emr_code": "NSIM1"
     },
     {
       "name": "Rosuvastatin",
@@ -134,44 +145,51 @@
     {
       "name": "Ezetimibe",
       "description": "10 mg (X-NLEM; 20.5 B)",
-      "dosage": "10mg"
+      "dosage": "10mg",
+      "emr_code": "TEZETI"
     },
     {
       "name": "Fenofibrate",
-      "description": "ควรรับประทานพร้อมอาหาร; 200/100 mg (ค; 5.25/4 B)",
-      "dosage": "1 cap"
+      "description": "ควรรับประทานพร้อมอาหาร; 100 mg (ค; 4 B)",
+      "dosage": "1 cap",
+      "emr_code": "NFEN1"
     },
     {
       "name": "Gemfibrozil",
-      "description": "ไม่แนะนำให้ใช้ร่วมกับ statin; 300/600 mg (ก; 1.5 B)",
-      "dosage": "600-1200mg"
+      "description": "ไม่แนะนำให้ใช้ร่วมกับ statin; 600 mg (ก; 1.5 B)",
+      "dosage": "600-1200mg",
+      "emr_code": "NGEM6"
     }
   ],
   "diabetes_drugs": [
     {
       "name": "metFORMIN",
       "description": "500 mg (1 B)",
-      "dosage": "1x1 > 2-1-2"
+      "dosage": "1x1 > 2-1-2",
+      "emr_code": "TMM"
     },
     {
       "group": "SU",
       "name": "glipiZIDE",
       "description": "5 mg (1 B)",
-      "dosage": "0.5x1 > 2x2"
+      "dosage": "0.5x1 > 2x2",
+      "emr_code": "TGP"
     },
     {
       "group": "SU",
       "name": "Glimepiride",
       "trade_name": "AMARYL",
       "description": "4 mg (X-NLEM; 9 B)",
-      "dosage": "1-4mg*1"
+      "dosage": "1-4mg*1",
+      "emr_code": "TAMAR4"
     },
     {
       "group": "TZD",
       "name": "Pioglitazone",
       "trade_name": "UTMOS",
       "description": "30 mg (ง; 1.5 B)",
-      "dosage": "0.5x1 > 1.5x1"
+      "dosage": "0.5x1 > 1.5x1",
+      "emr_code": "TPIOG3"
     },
     {
       "group": "DPP4i",
@@ -212,7 +230,8 @@
       "group": "Insulin",
       "name": "Glargine",
       "trade_name": "TOUJEO",
-      "description": "X-NLEM; 450 U/842 B"
+      "description": "X-NLEM; 450 U/842 B",
+      "emr_code": "ITOUJ"
     },
     {
       "group": "Insulin",
@@ -392,7 +411,8 @@
   "vaccines": [
     {
       "name": "Influenza",
-      "description": "all individuals or ≥65 years old; every year"
+      "description": "all individuals; free for ≥65 years old, BW>100kg, BMI>35, or DM; every year",
+      "emr_code": "IFLUF"
     },
     {
       "name": "Pneumococcal",
@@ -404,7 +424,8 @@
     },
     {
       "name": "Td/Tdap",
-      "description": "every 10 years"
+      "description": "every 10 years",
+      "emr_code": "ITT"
     }
   ]
 }

@@ -21,7 +21,7 @@ async function main(inputArgs: string[]): Promise<void> {
     return
   }
 
-  const allResult = await fetchEmr(patientId, sessionId)
+  const allResult = await fetchEmr(sessionId, patientId)
   console.log(allResult)
 
   console.log(`%cHello, ${allResult.name}!`, `color: blue; font-weight: bold`)

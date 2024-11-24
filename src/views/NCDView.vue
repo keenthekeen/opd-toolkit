@@ -52,6 +52,7 @@ const hypertension_drugs = ref(
     ...drug,
     previous_dose: '',
     new_dose: '',
+    emr_note: '',
   })),
 )
 const dyslipidemia_drugs = ref(
@@ -59,6 +60,7 @@ const dyslipidemia_drugs = ref(
     ...drug,
     previous_dose: '',
     new_dose: '',
+    emr_note: '',
   })),
 )
 const diabetes_drugs = ref(
@@ -66,6 +68,7 @@ const diabetes_drugs = ref(
     ...drug,
     previous_dose: '',
     new_dose: '',
+    emr_note: '',
   })),
 )
 const lifestyle_modifications = ref(
@@ -109,6 +112,7 @@ const importEmr = (data: {
   height: string
   weight: string
   labs: { name: string; result: string; date: string }[]
+  drugs: { code: string; result: string }[]
 }) => {
   patientId.value = data.id
   form.age = data.age
@@ -183,6 +187,33 @@ const importEmr = (data: {
           form.height &&
           Number(form.weight) / (Number(form.height) / 100) ** 2 < 23
         )
+      }
+      return item
+    })
+  })
+  // Process drug history
+  data.drugs?.forEach((drug) => {
+    hypertension_drugs.value = hypertension_drugs.value.map((item) => {
+      if (item.emr_code === drug.code) {
+        item.emr_note = drug.result
+      }
+      return item
+    })
+    dyslipidemia_drugs.value = dyslipidemia_drugs.value.map((item) => {
+      if (item.emr_code === drug.code) {
+        item.emr_note = drug.result
+      }
+      return item
+    })
+    diabetes_drugs.value = diabetes_drugs.value.map((item) => {
+      if (item.emr_code === drug.code) {
+        item.emr_note = drug.result
+      }
+      return item
+    })
+    vaccines.value = vaccines.value.map((item) => {
+      if (item.emr_code === drug.code) {
+        item.history = drug.result
       }
       return item
     })
@@ -286,6 +317,7 @@ const importEmr = (data: {
           </div>
           <div
             v-for="hx in history"
+            :key="hx.title"
             v-show="hx.title != 'Gestational hypertension' || form.sex != '1'"
             class="col-span-2 relative flex gap-x-3 items-center"
           >
@@ -368,7 +400,7 @@ const importEmr = (data: {
                 </li>
                 <li>
                   Non-dihydropyridine CCBs are contraindicated in bradycardia, high grade SA/AV
-                  block, constipation, LVEF <40%.
+                  block, constipation, LVEF &lt;40%.
                 </li>
                 <li>
                   Thiazides are contraindicated in gout, glucose intolerance, pregnancy, hyperCa,
@@ -515,6 +547,9 @@ const importEmr = (data: {
                       <span class="ml-1 inline-block text-xs text-gray-400">{{
                         drug.description
                       }}</span>
+                      <p class="ml-1 inline-block text-sm text-blue-400">{{
+                          drug.emr_note
+                        }}</p>
                     </td>
                     <td
                       class="px-2 py-1 text-xs text-gray-400"
@@ -556,7 +591,7 @@ const importEmr = (data: {
           </AssetModal>
           <template v-if="form.dx_dyslipidemia">
             <p>
-              Look for genetic dyslipidemia in case of family history of premature CAD (<55-60 yr)
+              Look for genetic dyslipidemia in case of family history of premature CAD (&lt;55-60 yr)
               or xanthoma. Look for secondary causes e.g. nephrotic syndrome, hypothyroidism,
               Cushing syndrome.
             </p>
@@ -659,7 +694,7 @@ const importEmr = (data: {
                 class="mt-1 w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               >
                 <option value=""></option>
-                <option v-for="option in STATIC.ldl_targets" :value="option">{{ option }}</option>
+                <option v-for="option in STATIC.ldl_targets" :value="option" :key="option">{{ option }}</option>
               </select>
             </div>
             <div class="col-span-6">
@@ -722,6 +757,9 @@ const importEmr = (data: {
                       {{ drug.name }}
                       <span v-if="drug.trade_name" class="mx-0.5">({{ drug.trade_name }})</span>
                       <span class="text-xs text-gray-400">{{ drug.description }}</span>
+                      <p class="ml-1 inline-block text-sm text-blue-400">{{
+                          drug.emr_note
+                        }}</p>
                     </td>
                     <td class="px-2 py-1 text-xs text-gray-400">
                       {{ drug.dosage }}
@@ -904,6 +942,9 @@ const importEmr = (data: {
                       {{ drug.name }}
                       <span v-if="drug.trade_name" class="mx-0.5">({{ drug.trade_name }})</span>
                       <span class="text-xs text-gray-400">{{ drug.description }}</span>
+                      <p class="ml-1 inline-block text-sm text-blue-400">{{
+                          drug.emr_note
+                        }}</p>
                     </td>
                     <td class="px-2 py-1 text-xs text-gray-400">
                       {{ drug.dosage }}
@@ -1027,6 +1068,7 @@ const importEmr = (data: {
         <template #form>
           <div
             v-for="item in lifestyle_modifications"
+            :key="item.id"
             class="col-span-6"
             :class="{ 'print:hidden': !item.checked }"
           >
@@ -1060,6 +1102,7 @@ const importEmr = (data: {
           <div class="col-span-6">
             <div
               v-for="(item, i) in investigations"
+              :key="item.name"
               class="relative flex gap-x-3 items-center"
               :class="{ 'print:hidden': !item.checked }"
             >
@@ -1140,7 +1183,7 @@ const importEmr = (data: {
               >
                 Medications:
                 <ul>
-                  <template v-for="drug in hypertension_drugs">
+                  <template v-for="drug in hypertension_drugs" :key="drug.name">
                     <li v-if="drug.previous_dose || drug.new_dose">
                       - {{ drug.name }}:
                       <span v-if="drug.previous_dose != drug.new_dose">
@@ -1173,7 +1216,7 @@ const importEmr = (data: {
               >
                 Medications:
                 <ul>
-                  <template v-for="drug in dyslipidemia_drugs">
+                  <template v-for="drug in dyslipidemia_drugs" :key="drug.name">
                     <li v-if="drug.previous_dose || drug.new_dose">
                       - {{ drug.name }}: {{ drug.previous_dose || '0' }}
                       <span v-if="drug.previous_dose != drug.new_dose">
@@ -1207,7 +1250,7 @@ const importEmr = (data: {
               >
                 Medications:
                 <ul>
-                  <template v-for="drug in diabetes_drugs">
+                  <template v-for="drug in diabetes_drugs" :key="drug.name">
                     <li v-if="drug.previous_dose || drug.new_dose">
                       - {{ drug.name }}: {{ drug.previous_dose || '0' }}
                       <span v-if="drug.previous_dose != drug.new_dose">
@@ -1232,7 +1275,7 @@ const importEmr = (data: {
               <p>===== COMPLICATION SCREENING =====</p>
               <ul>
                 <template v-for="item in investigations">
-                  <li v-if="item.result">- {{ item.name }}: {{ item.result }} ({{ item.when }})</li>
+                  <li v-if="item.result" :key="item.name">- {{ item.name }}: {{ item.result }} ({{ item.when }})</li>
                 </template>
               </ul>
             </template>
@@ -1240,7 +1283,7 @@ const importEmr = (data: {
               <p>====== VACCINATIONS ======</p>
               <ul>
                 <template v-for="item in vaccines">
-                  <li v-if="item.history">- {{ item.name }}: {{ item.history }}</li>
+                  <li v-if="item.history" :key="item.name">- {{ item.name }}: {{ item.history }}</li>
                 </template>
               </ul>
             </template>
@@ -1280,7 +1323,7 @@ const importEmr = (data: {
               <p>Advise lifestyle modifications:</p>
               <ul>
                 <template v-for="item in lifestyle_modifications">
-                  <li v-if="item.checked">- {{ item.title }}</li>
+                  <li v-if="item.checked" :key="item.title">- {{ item.title }}</li>
                 </template>
               </ul>
               <br />
@@ -1289,7 +1332,7 @@ const importEmr = (data: {
               <p>Lab next visit:</p>
               <ul>
                 <template v-for="item in investigations">
-                  <li v-if="item.checked">- {{ item.name }}</li>
+                  <li v-if="item.checked" :key="item.name">- {{ item.name }}</li>
                 </template>
               </ul>
               <br />
@@ -1298,7 +1341,7 @@ const importEmr = (data: {
               <p>Vaccine administration today:</p>
               <ul>
                 <template v-for="item in vaccines">
-                  <li v-if="item.checked">- {{ item.name }} vaccine IM x 1 dose</li>
+                  <li v-if="item.checked" :key="item.name">- {{ item.name }} vaccine IM x 1 dose</li>
                 </template>
               </ul>
               <br />

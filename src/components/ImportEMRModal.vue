@@ -9,12 +9,13 @@ const emit = defineEmits(['import'])
 const show = ref(false)
 
 const patientId = ref('')
+const patientIdType = ref('hn')
 const errorMessage = ref('')
 const successMessage = ref('')
 const search = async () => {
   if (patientId.value) {
     const response = await fetch(
-      `http://localhost:8000/fetch-emr?patientId=${patientId.value}`,
+      `http://localhost:8000/fetch-emr?${patientIdType.value}=${patientId.value}`,
     ).then((r) => r.json())
     if (response.sex) {
       emit('import', { ...response, id: patientId.value })
@@ -56,12 +57,27 @@ watch(patientId, () => {
   <Modal :show="show" @close="show = false">
     <div class="m-4">
       <div class="mb-4 text-lg">Import EMR data</div>
-      <div class="w-full print:hidden">
-        <Label for="patientId" value="Patient ID" />
+      <fieldset>
+        <legend class="text-sm/6 font-semibold text-gray-900">Search using</legend>
+        <div class="mt-2 space-y-2">
+          <div class="flex items-center gap-x-3">
+            <input id="radio-hn" v-model="patientIdType" value="hn" type="radio" class="size-4 border-gray-300 text-indigo-600 focus:ring-indigo-600">
+            <label for="radio-hn" class="block text-sm/6 font-medium text-gray-900">HN</label>
+          </div>
+          <div class="flex items-center gap-x-3">
+            <input id="radio-patientId" v-model="patientIdType" value="patientId" type="radio" class="size-4 border-gray-300 text-indigo-600 focus:ring-indigo-600">
+            <div>
+            <label for="radio-patientId" class="block text-sm/6 font-medium text-gray-900">Patient ID</label>
+            <p class="mt-2 text-xs text-gray-400">
+              ไม่ใช่ HN; ดูจาก URL ที่หน้า "ประวัติการรักษา" e.g. 581135
+            </p>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+      <div class="mt-4 w-full">
+        <Label for="patientId" :value="(patientIdType=='hn') ? 'HN' : 'Patient ID'" />
         <Input id="patientId" v-model.trim="patientId" type="number" class="w-full" autofocus />
-        <p class="mt-2 text-xs text-gray-400">
-          ไม่ใช่ HN; ดูจาก URL ที่หน้า "ประวัติการรักษา" e.g. 581135
-        </p>
         <p class="mt-2 text-xs text-red-500">
           {{ errorMessage }}
         </p>
