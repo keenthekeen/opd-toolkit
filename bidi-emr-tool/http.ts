@@ -21,7 +21,7 @@ router.get('/fetch-emr', async (context) => {
     return
   }
   console.log('Fetching EMR for patientId: ', patientId ?? hn)
-  const result = patientId ? await fetchEmr(sessionId, patientId) : await fetchEmr(sessionId, undefined, hn)
+  const result = patientId ? await fetchEmr(sessionId, patientId) : await fetchEmr(sessionId, undefined, hn ?? '')
   console.log(result)
   context.response.body = result
   /* context.response.body = {

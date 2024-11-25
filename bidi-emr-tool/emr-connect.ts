@@ -4,13 +4,13 @@ export async function fetchEmr(sessionId: string, patientId?: string, hn?: strin
   if (!patientId && hn) {
     // Convert HN to patientId
     const patientSearch = await fetchFromRemote(
-      `http://192.168.254.90/emrbidi/share/data/jobList.php?hn1=${hn}&allPatient=true`,
+      `http://192.168.254.90/emrbidi/share/data/jobList.php?hn1=${hn}&hn2=&an1=&an2=&fname=&lname=&servicePointId=&cid=&allPatient=true`,
       '',
       sessionId,
     )
     const hnMatch = patientSearch.match(/<patientId>(\d+)<\/patientId>/)?.[1]
     if (hnMatch) {
-      patientId = hnMatch[1]
+      patientId = hnMatch
     }
   }
   if (!patientId) {
