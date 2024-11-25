@@ -1,4 +1,5 @@
 import NCD_STATIC from '../src/ncd.json' with { type: "json" }
+import { parse } from 'https://deno.land/x/xml@6.0.1/mod.ts'
 
 export async function fetchEmr(sessionId: string, patientId?: string, hn?: string) {
   if (!patientId && hn) {
@@ -112,24 +113,24 @@ export async function fetchEmr(sessionId: string, patientId?: string, hn?: strin
     patientId,
     sessionId,
   )
-  const drugList = [...NCD_STATIC.hypertension_drugs, ...NCD_STATIC.dyslipidemia_drugs, ...NCD_STATIC.diabetes_drugs].map((drug) => {
-    if (!drug.emr_code) {
-      return null;
+  const drugOrders = (parse(drugOrderResponse).root as {
+    data: Drug[]
+  }).data.reduce((carry: Drug[], drug: Drug) => {
+    if (carry.filter(v => v.code === drug.code).length === 0) {
+      // Only unique items
+      return [...carry, {
+        code: drug.code,
+        amount: drug.amount,
+        price: drug.price,
+        dateOrder: drug.dateOrder,
+        drugLabel: drug.drugLabel,
+      }]
     }
-    const match = drugOrderResponse.match(
-      new RegExp(
-        `<amount>(.+?)<\/amount>.+?<price>(.+?)<\/price>.+?<code>${drug.emr_code}<\/code>.+?<dateOrder>(.+?)<\/dateOrder>.+?<drugLabel>([.\\s]+?)<\/drugLabel>`,
-        'i',
-      ),
-    )
-    if (!match) {
-      return null;
-    }
-    return {
-      code: drug.emr_code,
-      result: `${match[3]} ${match[4]}; ${match[1]}x ${match[2]}B`,
-    }
-  }).filter((v) => v)
+    return carry
+  }, []).map((drug) => ({
+      code: drug.code,
+      result: `${drug.dateOrder} ${drug.drugLabel}; ${drug.amount}x ${drug.price}B`,
+  }))
 
   // VACCINES
   const vaccinesResponse = await fetchFromRemote(
@@ -166,7 +167,7 @@ export async function fetchEmr(sessionId: string, patientId?: string, hn?: strin
     sex,
     ...vitals,
     labs: labResult,
-    drugs: [...drugList, ...vaccinesList],
+    drugs: [...drugOrders, ...vaccinesList],
   }
 }
 
@@ -180,4 +181,12 @@ async function fetchFromRemote(url: string, patientId: string, sessionId: string
   // Decode using locale encoding
   const decoder = new TextDecoder('windows-874');
   return decoder.decode(await response.arrayBuffer());
+}
+
+interface Drug {
+code: string
+amount: string
+price: string
+dateOrder: string
+drugLabel: string
 }
