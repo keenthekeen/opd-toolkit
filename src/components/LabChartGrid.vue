@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import EnlargableImage from '@/components/EnlargableImage.vue'
+
 const props = defineProps({
   patientId: String,
   noShadow: { type: Boolean, default: false },
@@ -21,6 +23,7 @@ const remoteUrl = props.useProxy
   <div class="mt-4 sm:grid sm:grid-cols-2 gap-4">
     <div
       v-for="lab in labs"
+      :key="lab.id"
       class="flex"
       :class="{
         'print:hidden': !lab.checked,
@@ -39,8 +42,7 @@ const remoteUrl = props.useProxy
         <p class="text-lg md:text-xl font-bold [writing-mode:vertical-lr]">{{ lab.name }}</p>
       </div>
       <div class="flex-auto">
-        <img
-          class="max-w-full"
+        <EnlargableImage
           :alt="lab.name"
           :src="
             remoteUrl +
