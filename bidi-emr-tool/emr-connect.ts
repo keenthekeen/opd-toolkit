@@ -116,7 +116,7 @@ export async function fetchEmr(sessionId: string, patientId?: string, hn?: strin
   const drugOrders = (parse(drugOrderResponse).root as {
     data: Drug[]
   }).data.reduce((carry: Drug[], drug: Drug) => {
-    if (carry.filter(v => v.code === drug.code).length === 0) {
+    if (drug.code && carry.filter(v => v.code === drug.code).length === 0) {
       // Only unique items
       return [...carry, {
         code: drug.code,
@@ -163,7 +163,7 @@ export async function fetchEmr(sessionId: string, patientId?: string, hn?: strin
   return {
     name: labsReport.match(/Patient Name : <\/td>\s+<td width="54%">(.+?)</)?.[1],
     age: labsReport.match(/Age : (\d+) /)?.[1],
-    // Sex is not working
+    patientId,
     sex,
     ...vitals,
     labs: labResult,

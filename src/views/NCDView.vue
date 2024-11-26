@@ -106,6 +106,7 @@ const importEmr = (data: {
   id: string
   name: string
   age: string
+  patientId: string
   sex: string
   office_sbp: string
   office_dbp: string
@@ -114,7 +115,7 @@ const importEmr = (data: {
   labs: { name: string; result: string; date: string }[]
   drugs: { code: string; result: string }[]
 }) => {
-  patientId.value = data.id
+  patientId.value = data.patientId ?? data.id
   form.age = data.age
   form.sex = data.sex
   form.office_sbp = data.office_sbp
