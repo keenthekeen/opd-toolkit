@@ -6,7 +6,7 @@
       "description": "5/20 mg (1 B)",
       "initial_dose": "2.5-5mg",
       "max_dose": "40mg/2",
-      "emr_code": "TEN1"
+      "emr_code": ["TEN1", "TEN2"]
     },
     {
       "group": "ARB",
@@ -15,16 +15,16 @@
       "description": "50/100 mg (1.5 B)",
       "initial_dose": "50mg",
       "max_dose": "100mg",
-      "emr_code": "TLOS1"
+      "emr_code": ["TLOS1"]
     },
     {
       "group": "ARB",
       "name": "Azilsartan",
       "trade_name": "EDARBI",
-      "description": "40 mg (22 B)",
+      "description": "40 mg (X-NLEM; 22 B)",
       "initial_dose": "40mg",
       "max_dose": "80mg",
-      "emr_code": "TEDARB"
+      "emr_code": ["TEDARB"]
     },
     {
       "group": "CCB-D",
@@ -32,7 +32,7 @@
       "description": "5/10 mg (1-1.5 B)",
       "initial_dose": "5mg",
       "max_dose": "10mg",
-      "emr_code": "TAMLO"
+      "emr_code": ["TAMLO", "TAMLO2"]
     },
     {
       "group": "CCB-D",
@@ -40,7 +40,7 @@
       "description": "20 mg (3 B)",
       "initial_dose": "5-10mg",
       "max_dose": "20mg*1",
-      "emr_code": "TMAD2"
+      "emr_code": ["TMAD2"]
     },
     {
       "group": "CCB-D",
@@ -62,7 +62,7 @@
       "description": "25 mg",
       "initial_dose": "12.5mg",
       "max_dose": "50mg",
-      "emr_code": "THCT2"
+      "emr_code": ["THCT2"]
     },
     {
       "group": "D",
@@ -70,7 +70,7 @@
       "description": "25/100 mg",
       "initial_dose": "25mg",
       "max_dose": "100mg/2",
-      "emr_code": "TALD2"
+      "emr_code": ["TALD2"]
     },
     {
       "group": "BB",
@@ -79,7 +79,7 @@
       "description": "non-selective & vasodilator property; 6.25 mg",
       "initial_dose": "6.25mg*2",
       "max_dose": "25mg*2",
-      "emr_code": "TDILA2"
+      "emr_code": ["TDILA2"]
     },
     {
       "group": "BB",
@@ -87,7 +87,7 @@
       "description": "Selective beta-1; 50 mg (ก, 0.5 B)",
       "initial_dose": "25-50mg*1",
       "max_dose": "100mg*1",
-      "emr_code": "TATE1"
+      "emr_code": ["TATE1"]
     },
     {
       "group": "BB",
@@ -95,7 +95,7 @@
       "description": "Selective beta-1; 5 mg (X-NLEM, 2.25 B)",
       "initial_dose": "5mg*1",
       "max_dose": "10mg*1",
-      "emr_code": "TBISOP"
+      "emr_code": ["TBISOP", "TBISOP2"]
     },
     {
       "group": "BB",
@@ -113,7 +113,7 @@
       "description": "longer-acting; 2/4 mg",
       "initial_dose": "1mg",
       "max_dose": "4mg",
-      "emr_code": "TPENC2"
+      "emr_code": ["TPENC2", "TPENC4"]
     },
     {
       "name": "hydrALAZINE",
@@ -121,7 +121,7 @@
       "description": "25 mg",
       "initial_dose": "10mg*4",
       "max_dose": "50mg*4",
-      "emr_code": "TAPR2"
+      "emr_code": ["TAPR2"]
     }
   ],
   "dyslipidemia_drugs": [
@@ -130,39 +130,39 @@
       "trade_name": "CHLOVAS, LIPITOR",
       "description": "40 mg (3.25 B)",
       "dosage": "10-80mg",
-      "emr_code": "NATORV"
+      "emr_code": ["TATOR4", "T1ATOR", "T1ATORSIAM","NATORV"]
     },
     {
       "name": "Simvastatin",
       "trade_name": "BESTATIN",
       "description": "10/40 mg (1-1.5 B); ไม่ใช้ร่วมกับยาต้านเชื้อรากลุ่ม -conazole, Erythromycin, Clarithromycin,      Gemfibrozil; ไม่ใช้เกิน 20 mg ร่วมกับ Amlodipine",
       "dosage": "10-40mg",
-      "emr_code": "NSIM1"
+      "emr_code": ["TSIM1", "TSIM4", "TSIM4B", "NSIM1"]
     },
     {
       "name": "Rosuvastatin",
       "trade_name": "VIVACOR",
       "description": "10 mg (X-NLEM; 5.25-6.25 B)",
       "dosage": "5-20mg",
-      "emr_code": "TROSU3"
+      "emr_code": ["TROSU3"]
     },
     {
       "name": "Ezetimibe",
       "description": "10 mg (X-NLEM; 20.5 B)",
       "dosage": "10mg",
-      "emr_code": "TEZETI"
+      "emr_code": ["TEZETI", "TEZETIG"]
     },
     {
       "name": "Fenofibrate",
-      "description": "ควรรับประทานพร้อมอาหาร; 100 mg (ค; 4 B)",
+      "description": "ควรรับประทานพร้อมอาหาร; 160 mg (ค; 4 B)",
       "dosage": "1 cap",
-      "emr_code": "NFEN1"
+      "emr_code": ["TFENO1", "TFENO2","NFEN1"]
     },
     {
       "name": "Gemfibrozil",
       "description": "ไม่แนะนำให้ใช้ร่วมกับ statin; 600 mg (ก; 1.5 B)",
       "dosage": "600-1200mg",
-      "emr_code": "NGEM6"
+      "emr_code": ["TGEM3", "NGEM6"]
     }
   ],
   "diabetes_drugs": [
@@ -170,14 +170,14 @@
       "name": "metFORMIN",
       "description": "500 mg (1 B)",
       "dosage": "1x1 > 2-1-2",
-      "emr_code": "TMM"
+      "emr_code": ["TMM", "TMM5M"]
     },
     {
       "group": "SU",
       "name": "glipiZIDE",
       "description": "5 mg (1 B)",
       "dosage": "0.5x1 > 2x2",
-      "emr_code": "TGP"
+      "emr_code": ["TGP"]
     },
     {
       "group": "SU",
@@ -185,7 +185,7 @@
       "trade_name": "AMARYL",
       "description": "4 mg (X-NLEM; 9 B)",
       "dosage": "1-4mg*1",
-      "emr_code": "TAMAR4"
+      "emr_code": ["TAMAR4"]
     },
     {
       "group": "TZD",
@@ -193,40 +193,40 @@
       "trade_name": "UTMOS",
       "description": "30 mg (ง; 1.5 B)",
       "dosage": "0.5x1 > 1.5x1",
-      "emr_code": "TPIOG3"
+      "emr_code": ["TPIOG3"]
     },
     {
       "group": "DPP4i",
       "name": "Teneligliptin",
       "trade_name": "TENELIA",
       "description": "20 mg (X-NLEM; 23 B)",
-      "emr_code": "TTENEL"
+      "emr_code": ["TTENEL"]
     },
     {
       "group": "GLP1a",
       "name": "Dulaglutide",
       "description": "30 mg (1532 B)",
-      "emr_code": "ITRUL"
+      "emr_code": ["ITRUL"]
     },
     {
       "group": "GLP1a",
       "name": "Semaglutide",
       "description": "7/14 mg (231-250 B)",
-      "emr_code": "TSEMAG07"
+      "emr_code": ["TSEMAG07", "TSEMAG14"]
     },
     {
       "group": "SGLT2i",
       "name": "Empaglifozin",
       "trade_name": "JARDIANCE",
       "description": "25 mg (82 B)",
-      "emr_code": "TJARDI"
+      "emr_code": ["TJARDI"]
     },
     {
       "group": "Insulin",
       "name": "RI",
       "trade_name": "ACTRAPID",
       "description": "1000 U/104 B",
-      "emr_code": "IACTR"
+      "emr_code": ["IACTR"]
     },
     {
       "group": "Insulin",
@@ -234,38 +234,38 @@
       "trade_name": "INSULATARD",
       "description": "1000 U/91 B",
       "dosage": "start 0.1-0.2 u/kg hs",
-      "emr_code": "IINSU"
+      "emr_code": ["IINSU"]
     },
     {
       "group": "Insulin",
       "name": "Glargine",
       "trade_name": "TOUJEO",
       "description": "X-NLEM; 450 U/842 B",
-      "emr_code": "ITOUJ"
+      "emr_code": ["ITOUJ"]
     },
     {
       "group": "Insulin",
       "name": "NovoRAPID",
       "description": "ก; 300 U/376 B",
-      "emr_code": "INOVOR"
+      "emr_code": ["INOVOR"]
     },
     {
       "group": "Insulin",
       "name": "Mixtard",
       "description": "ก; 95 B",
-      "emr_code": "IMIX"
+      "emr_code": ["IMIX"]
     },
     {
       "group": "Insulin",
       "name": "NovoMIX",
       "description": "ก; 300 U/373 B",
-      "emr_code": "INOVOM"
+      "emr_code": ["INOVOM"]
     },
     {
       "group": "Insulin",
       "name": "Ryzodeg",
       "description": "300 U/897 B",
-      "emr_code": "IRYZOD"
+      "emr_code": ["IRYZOD"]
     }
   ],
   "ldl_targets": [
@@ -426,22 +426,22 @@
     {
       "name": "Influenza",
       "description": "all individuals; free for ≥65 years old, BW>100kg, BMI>35, or DM; every year",
-      "emr_code": "IFLUF"
+      "emr_code": ["IFLUF"]
     },
     {
       "name": "Pneumococcal",
       "description": "≥65 years; 1 dose of PCV13 then PPSV23 after 1 year",
-      "emr_code": "IPREV"
+      "emr_code": ["IPREV"]
     },
     {
       "name": "Zoster",
       "description": "≥50 years (CDC) or ≥60 years (DDC); Shingrix (subunit) 2 doses 2-6 months apart",
-      "emr_code": "IZOS3"
+      "emr_code": ["IZOS3"]
     },
     {
       "name": "Td/Tdap",
       "description": "every 10 years",
-      "emr_code": "ITT"
+      "emr_code": ["ITT"]
     }
   ]
 }

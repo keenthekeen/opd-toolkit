@@ -123,6 +123,9 @@ const importEmr = (data: {
   form.height = data.height
   form.weight = data.weight
   data.labs.forEach((lab) => {
+    if (!lab.result) {
+      return
+    }
     switch (lab.name) {
       case 'Hemoglobin':
         investigations.value = investigations.value.map((item) => {
@@ -179,41 +182,41 @@ const importEmr = (data: {
       default:
         alert(`[Lab] ${lab.name} = ${lab.result} (${lab.date})`)
     }
-    form.dx_diabetes = Boolean(form.hba1c && parseFloat(form.hba1c) > 6.5)
-    // Uncheck weight reduction advice if BMI < 23
-    lifestyle_modifications.value = lifestyle_modifications.value.map((item) => {
-      if (item.title === 'Weight reduction') {
-        item.checked = !(
-          form.weight &&
-          form.height &&
-          Number(form.weight) / (Number(form.height) / 100) ** 2 < 23
-        )
-      }
-      return item
-    })
+  })
+  form.dx_diabetes = Boolean(form.hba1c && parseFloat(form.hba1c) > 6.5)
+  // Uncheck weight reduction advice if BMI < 23
+  lifestyle_modifications.value = lifestyle_modifications.value.map((item) => {
+    if (item.title === 'Weight reduction') {
+      item.checked = !(
+        form.weight &&
+        form.height &&
+        Number(form.weight) / (Number(form.height) / 100) ** 2 < 23
+      )
+    }
+    return item
   })
   // Process drug history
   data.drugs?.forEach((drug) => {
     hypertension_drugs.value = hypertension_drugs.value.map((item) => {
-      if (item.emr_code === drug.code) {
+      if (item.emr_code?.includes(drug.code)) {
         item.emr_note = drug.result
       }
       return item
     })
     dyslipidemia_drugs.value = dyslipidemia_drugs.value.map((item) => {
-      if (item.emr_code === drug.code) {
+      if (item.emr_code?.includes(drug.code)) {
         item.emr_note = drug.result
       }
       return item
     })
     diabetes_drugs.value = diabetes_drugs.value.map((item) => {
-      if (item.emr_code === drug.code) {
+      if (item.emr_code?.includes(drug.code)) {
         item.emr_note = drug.result
       }
       return item
     })
     vaccines.value = vaccines.value.map((item) => {
-      if (item.emr_code === drug.code) {
+      if (item.emr_code?.includes(drug.code)) {
         item.history = drug.result
       }
       return item
@@ -548,7 +551,7 @@ const importEmr = (data: {
                       <span class="ml-1 inline-block text-xs text-gray-400">{{
                         drug.description
                       }}</span>
-                      <p class="ml-1 inline-block text-sm text-blue-400">{{
+                      <p class="ml-1 inline-block text-sm text-blue-400 whitespace-pre-line">{{
                           drug.emr_note
                         }}</p>
                     </td>
@@ -758,7 +761,7 @@ const importEmr = (data: {
                       {{ drug.name }}
                       <span v-if="drug.trade_name" class="mx-0.5">({{ drug.trade_name }})</span>
                       <span class="text-xs text-gray-400">{{ drug.description }}</span>
-                      <p class="ml-1 inline-block text-sm text-blue-400">{{
+                      <p class="ml-1 inline-block text-sm text-blue-400 whitespace-pre-line">{{
                           drug.emr_note
                         }}</p>
                     </td>
@@ -943,7 +946,7 @@ const importEmr = (data: {
                       {{ drug.name }}
                       <span v-if="drug.trade_name" class="mx-0.5">({{ drug.trade_name }})</span>
                       <span class="text-xs text-gray-400">{{ drug.description }}</span>
-                      <p class="ml-1 inline-block text-sm text-blue-400">{{
+                      <p class="ml-1 inline-block text-sm text-blue-400 whitespace-pre-line">{{
                           drug.emr_note
                         }}</p>
                     </td>

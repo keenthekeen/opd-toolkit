@@ -1,4 +1,4 @@
-import NCD_STATIC from '../src/ncd.json' with { type: "json" }
+import NCD_STATIC from '../src/ncd.json' with { type: 'json' }
 import { parse } from 'https://deno.land/x/xml@6.0.1/mod.ts'
 
 export async function fetchEmr(sessionId: string, patientId?: string, hn?: string) {
@@ -113,24 +113,26 @@ export async function fetchEmr(sessionId: string, patientId?: string, hn?: strin
     patientId,
     sessionId,
   )
-  const drugOrders = (parse(drugOrderResponse).root as {
-    data: Drug[]
-  }).data.reduce((carry: Drug[], drug: Drug) => {
-    if (drug.code && carry.filter(v => v.code === drug.code).length === 0) {
+  const drugOrders = (
+    parse(drugOrderResponse).root as {
+      data: Drug[]
+    }
+  ).data.reduce((carry: { code: string; result: string }[], drug: Drug) => {
+    if (drug.code && carry.filter((v) => v.code === drug.code).length === 0) {
       // Only unique items
-      return [...carry, {
-        code: drug.code,
-        amount: drug.amount,
-        price: drug.price,
-        dateOrder: drug.dateOrder,
-        drugLabel: drug.drugLabel,
-      }]
+      const drugLabel = drug.drugLabel?.replace(/[\n\r\t]/gm, '') // remove line break
+      const amount = parseInt(drug.amount)
+      const price = parseInt(drug.price)
+      return [
+        ...carry,
+        {
+          code: drug.code,
+          result: `${drug.code} ${drug.name}\n${drug.dateOrder} ${drugLabel}; ${amount}x ${price}B`,
+        },
+      ]
     }
     return carry
-  }, []).map((drug) => ({
-      code: drug.code,
-      result: `${drug.dateOrder} ${drug.drugLabel}; ${drug.amount}x ${drug.price}B`,
-  }))
+  }, [])
 
   // VACCINES
   const vaccinesResponse = await fetchFromRemote(
@@ -138,16 +140,20 @@ export async function fetchEmr(sessionId: string, patientId?: string, hn?: strin
     patientId,
     sessionId,
   )
-  const vaccinesList = NCD_STATIC.vaccines.map((drug) => {
-    if (!drug.emr_code) {
-      return null;
-    }
-    const match = vaccinesResponse.includes('>'+drug.emr_code) // case sensitive
-    return match ? {
-      code: drug.emr_code,
-      result: 'Yes',
-    } : null
-  }).filter((v) => v)
+  const vaccinesList = NCD_STATIC.vaccines
+    .map((drug) => {
+      if (!drug.emr_code) {
+        return null
+      }
+      for (const code of drug.emr_code) {
+        const match = vaccinesResponse.includes('>' + code) // case-sensitive
+        if (match) {
+          return { code, result: 'Yes' }
+        }
+      }
+      return null
+    })
+    .filter((v) => v)
 
   let sex = labsReport.match(/Gender : <\/td>\s+<td width="24%">(.+?)</)?.[1]
   switch (sex) {
@@ -174,19 +180,20 @@ export async function fetchEmr(sessionId: string, patientId?: string, hn?: strin
 async function fetchFromRemote(url: string, patientId: string, sessionId: string) {
   const response = await fetch(url + `&patientId=${patientId}`, {
     headers: {
-      'Cookie': `PHPSESSID=${sessionId}; TestCookie=0`,
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko'
-    }
-  });
+      Cookie: `PHPSESSID=${sessionId}; TestCookie=0`,
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko',
+    },
+  })
   // Decode using locale encoding
-  const decoder = new TextDecoder('windows-874');
-  return decoder.decode(await response.arrayBuffer());
+  const decoder = new TextDecoder('windows-874')
+  return decoder.decode(await response.arrayBuffer())
 }
 
 interface Drug {
-code: string
-amount: string
-price: string
-dateOrder: string
-drugLabel: string
+  name: string
+  code: string
+  amount: string
+  price: string
+  dateOrder: string
+  drugLabel: string
 }
