@@ -298,7 +298,7 @@
   "lifestyle_modifications": [
     {
       "id": "advice_weight",
-      "for": "HT DLP",
+      "for": "HT DLP DM",
       "title": "Weight reduction",
       "description": "In overweight and obese individual; Target BMI 18.5-22.9 kg/m^2. Target waist circumference <90 cm (M) or <80 cm (W) or Ht/2."
     },
@@ -313,6 +313,11 @@
       "for": "HT",
       "title": "Limiting salt and sodium in food",
       "description": "WHO กำหนดปริมาณโซเดียมไม่เกิน 2 g/day = NaCl 1 teaspoon = Fish sauce/MSG 4 teaspoon"
+    },
+    {
+      "id": "advice_sugar",
+      "for": "DM",
+      "title": "Avoid sugar"
     },
     {
       "id": "advice_fatty_diet",
