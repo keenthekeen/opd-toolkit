@@ -54,7 +54,8 @@
       "group": "ARB+D",
       "name": "Azilsartan & Chlorthalidone",
       "trade_name": "EDARBYCLOR",
-      "description": "40/12.5 mg (22.5 B)"
+      "description": "40/12.5 mg (22.5 B)",
+      "available": false
     },
     {
       "group": "D",
@@ -269,8 +270,8 @@
     }
   ],
   "ldl_targets": [
-    "Adult, LDL ≥190 => Target <100 and 50% reduction",
-    "Adult, but 10-year risk ≥10% => Target <100 and 30% reduction",
+    "Adult, LDL >=190 => Target <100 and 50% reduction",
+    "Adult, but 10-year risk >=10% => Target <100 and 30% reduction",
     "Adult, but subclinical risk factors => Target <100 and 30% reduction",
     "Familial hypercholesterolemia => Target <70 and 50% reduction",
     "DM, ≥40 yr, 0-1 risk factors, LDL <190 => Target <100 and 30% reduction, TG <150",
@@ -370,7 +371,7 @@
       "ask_history": true
     },
     {
-      "name": "Creatinine (eGFR)",
+      "name": "Creatinine",
       "description": "q 1 year or 3-6 months for CKD",
       "ask_history": true
     },
@@ -408,7 +409,8 @@
     },
     {
       "name": "Chest x-ray",
-      "description": "check-up q 1-3 years"
+      "description": "check-up q 1-3 years",
+      "ask_history": true
     },
     {
       "name": "Ankle-brachial index"

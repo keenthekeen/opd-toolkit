@@ -5,24 +5,31 @@ const props = defineProps({
   patientId: String,
   noShadow: { type: Boolean, default: false },
   useProxy: { type: Boolean, default: false },
+  onlyLabs: { type: Array<string>, default: [] },
 })
 const labs = [
-  { id: '700', checked: true, name: 'Glucose' },
-  { id: '828', checked: true, name: 'HbA1c' },
-  { id: '705', checked: true, name: 'eGFR' },
-  { id: '727', checked: true, name: 'LDL' },
-  { id: '725', checked: false, name: 'Total cholesterol' },
-  { id: '715', checked: false, name: 'Potassium' },
+  { id: '828', show: true, checked: true, name: 'HbA1c' },
+  { id: '700', show: true, checked: true, name: 'Glucose' },
+  { id: '705', show: true, checked: true, name: 'eGFR' },
+  { id: '727', show: true, checked: true, name: 'LDL' },
+  { id: '725', show: true, checked: false, name: 'Total cholesterol' },
+  { id: '715', show: true, checked: false, name: 'Potassium' },
 ]
+if (props.onlyLabs.length) {
+  labs.forEach((lab) => {
+    lab.show = props.onlyLabs.includes(lab.id)
+  })
+}
 const remoteUrl = props.useProxy
   ? 'http://localhost:8000/lab-chart'
   : 'http://192.168.254.90/emrbidi/lab/main/labGraphCmp.php'
 </script>
 
 <template>
-  <div class="mt-4 sm:grid sm:grid-cols-2 gap-4">
+  <div v-if="patientId" class="mt-4 sm:grid sm:grid-cols-2 gap-4">
     <div
       v-for="lab in labs"
+      v-show="lab.show"
       :key="lab.id"
       class="flex"
       :class="{

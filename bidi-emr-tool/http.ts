@@ -1,9 +1,20 @@
 import { Application, Router } from 'https://deno.land/x/oak/mod.ts'
 import { oakCors } from 'https://deno.land/x/cors/mod.ts'
+import { parse } from 'https://deno.land/std@0.200.0/flags/mod.ts'
 import { fetchEmr } from './emr-connect.ts'
 
 // Set sessionId
-const globalSessionId = prompt('Session Id? (run javascript:document.write(document.cookie))')
+const args = parse(Deno.args, {
+  // List of aliases
+  alias: { sessionId: 's' },
+  // All boolean arguments
+  boolean: [],
+  // All string arguments
+  string: ['sessionId'],
+  stopEarly: false,
+  '--': true,
+})
+const globalSessionId = args.sessionId ?? prompt('Run javascript:document.write(document.cookie) and paste session Id:')
 if (!globalSessionId) {
   console.error('Session Id is required.')
 }

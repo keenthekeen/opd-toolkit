@@ -91,6 +91,6 @@ export const calculateASCVDRiskToText = (
     riskCategory +
     ' risk, ' +
     (result.predicted_risk / result.compare_risk).toFixed(1) +
-    ' times of the reference population.'
+    'x.'
   )
 }

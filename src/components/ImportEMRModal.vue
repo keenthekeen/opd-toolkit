@@ -6,7 +6,7 @@ import Label from '@/components/Label.vue'
 import Input from '@/components/Input.vue'
 
 const emit = defineEmits(['import'])
-const show = ref(false)
+const show = ref(true)
 
 const patientId = ref('')
 const patientIdType = ref('hn')

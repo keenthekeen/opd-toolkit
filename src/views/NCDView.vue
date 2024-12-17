@@ -14,6 +14,7 @@ const form = reactive({
   dx_dyslipidemia: true,
   dx_hypertension: true,
   dx_diabetes: false,
+  dx_prediabetes: false,
   note_general: '',
   note_dyslipidemia: '',
   note_hypertension: '',
@@ -32,12 +33,19 @@ const form = reactive({
   ldl: '',
   total_cholesterol: '',
   lipid_when: '',
+  previous_ldl: '',
+  previous_total_cholesterol: '',
+  previous_lipid_when: '',
   myopathy: false,
   target_ldl: '',
   hba1c: '',
   hba1c_when: '',
   fasting_glucose: '',
   fasting_glucose_when: '',
+  previous_hba1c: '',
+  previous_hba1c_when: '',
+  previous_fasting_glucose: '',
+  previous_fasting_glucose_when: '',
   hypoglycemic_symptoms: false,
 })
 const patientId = ref('')
@@ -112,8 +120,14 @@ const importEmr = (data: {
   office_dbp: string
   height: string
   weight: string
-  labs: { name: string; result: string; date: string }[]
-  drugs: { code: string; result: string }[]
+  labs: {
+    name: string
+    result: string
+    date: string
+    previous_result?: string
+    previous_date?: string
+  }[]
+  drugs: { code: string; result: string; date?: string }[]
 }) => {
   patientId.value = data.patientId ?? data.id
   form.age = data.age
@@ -139,14 +153,18 @@ const importEmr = (data: {
       case 'HbA1c':
         form.hba1c = lab.result
         form.hba1c_when = lab.date
+        form.previous_hba1c = lab.previous_result ?? ''
+        form.previous_hba1c_when = lab.previous_date ?? ''
         break
       case 'Glucose':
         form.fasting_glucose = lab.result
         form.fasting_glucose_when = lab.date
+        form.previous_fasting_glucose = lab.previous_result ?? ''
+        form.previous_fasting_glucose_when = lab.previous_date ?? ''
         break
       case 'Creatinine':
         investigations.value = investigations.value.map((item) => {
-          if (item.name === 'Creatinine & eGFR') {
+          if (item.name === 'Creatinine') {
             item.result = (item.result ? item.result + ', ' : '') + 'Cr ' + lab.result
             item.when = lab.date
           }
@@ -155,8 +173,26 @@ const importEmr = (data: {
         break
       case 'eGFR':
         investigations.value = investigations.value.map((item) => {
-          if (item.name === 'Creatinine & eGFR') {
+          if (item.name === 'Creatinine') {
             item.result = (item.result ? item.result + ', ' : '') + 'eGFR ' + lab.result
+            item.when = lab.date
+          }
+          return item
+        })
+        break
+      case 'AST':
+        investigations.value = investigations.value.map((item) => {
+          if (item.name === 'AST, ALT') {
+            item.result = (item.result ? item.result + ', ' : '') + 'AST ' + lab.result
+            item.when = lab.date
+          }
+          return item
+        })
+        break
+      case 'ALT':
+        investigations.value = investigations.value.map((item) => {
+          if (item.name === 'AST, ALT') {
+            item.result = (item.result ? item.result + ', ' : '') + 'ALT ' + lab.result
             item.when = lab.date
           }
           return item
@@ -165,10 +201,14 @@ const importEmr = (data: {
       case 'Total cholesterol':
         form.total_cholesterol = lab.result
         form.lipid_when = lab.date
+        form.previous_total_cholesterol = lab.previous_result ?? ''
+        form.previous_lipid_when = lab.previous_date ?? ''
         break
       case 'LDL':
         form.ldl = lab.result
         form.lipid_when = lab.date
+        form.previous_ldl = lab.previous_result ?? ''
+        form.previous_lipid_when = lab.previous_date ?? ''
         break
       case 'Potassium':
         investigations.value = investigations.value.map((item) => {
@@ -340,17 +380,6 @@ const importEmr = (data: {
         </template>
       </FormSection>
       <SectionBorder />
-      <template v-if="patientId">
-        <FormSection>
-          <template #title>Labs</template>
-          <template #form>
-            <div class="col-span-6">
-              <LabChartGrid :patientId="patientId" :noShadow="true" :useProxy="true" />
-            </div>
-          </template>
-        </FormSection>
-        <SectionBorder />
-      </template>
       <FormSection>
         <template #title>Hypertension</template>
         <template #description>
@@ -632,6 +661,42 @@ const importEmr = (data: {
               </div>
             </div>
           </div>
+          <div class="col-span-6">
+            <LabChartGrid
+              :patientId="patientId"
+              :noShadow="true"
+              :useProxy="true"
+              :onlyLabs="['727', '725']"
+            />
+          </div>
+          <div class="col-span-2">
+            <Label for="previous_ldl" value="Previous LDL-C (mg/dL)" />
+            <Input
+              id="previous_ldl"
+              v-model="form.previous_ldl"
+              type="number"
+              class="mt-1 w-full"
+            />
+          </div>
+          <div class="col-span-2">
+            <Label for="previous_total_cholesterol" value="Total cholesterol (mg/dL)" />
+            <Input
+              id="previous_total_cholesterol"
+              v-model="form.previous_total_cholesterol"
+              type="number"
+              class="mt-1 w-full"
+            />
+          </div>
+          <div class="col-span-2">
+            <Label for="previous_lipid_when" value="Measured at" />
+            <Input
+              id="previous_lipid_when"
+              v-model="form.previous_lipid_when"
+              type="text"
+              class="mt-1 w-full"
+              placeholder="MM/YY"
+            />
+          </div>
           <div class="col-span-2">
             <Label for="ldl_value" value="Latest LDL-C (mg/dL)" />
             <Input id="ldl_value" v-model="form.ldl" type="number" class="mt-1 w-full" />
@@ -811,7 +876,7 @@ const importEmr = (data: {
           </template>
         </template>
         <template #form>
-          <div class="col-span-6">
+          <div class="col-span-3">
             <div class="relative flex gap-x-3 items-center">
               <div class="flex items-center">
                 <input
@@ -826,8 +891,69 @@ const importEmr = (data: {
               </div>
             </div>
           </div>
+          <div class="col-span-3">
+            <div class="relative flex gap-x-3 items-center">
+              <div class="flex items-center">
+                <input
+                  id="dx_prediabetes"
+                  v-model="form.dx_prediabetes"
+                  type="checkbox"
+                  class="size-6 rounded border-gray-300 text-gray-500 focus:ring-gray-500"
+                />
+              </div>
+              <div class="text-md">
+                <label for="dx_prediabetes" class="font-medium">Prediabetes</label>
+              </div>
+            </div>
+          </div>
+          <div class="col-span-6">
+            <LabChartGrid
+              :patientId="patientId"
+              :noShadow="true"
+              :useProxy="true"
+              :onlyLabs="['828', '700']"
+            />
+          </div>
           <div class="col-span-2">
-            <Label for="hba1c" value="HbA1c (%)" />
+            <Label for="previous_hba1c" value="Previous HbA1c (%)" />
+            <Input
+              id="previous_hba1c"
+              v-model="form.previous_hba1c"
+              type="number"
+              class="mt-1 w-full"
+            />
+          </div>
+          <div class="col-span-1">
+            <Label for="previous_hba1c_when" value="Measured at" />
+            <Input
+              id="previous_hba1c_when"
+              v-model="form.previous_hba1c_when"
+              type="text"
+              class="mt-1 w-full"
+              placeholder="MM/YY"
+            />
+          </div>
+          <div class="col-span-2">
+            <Label for="previous_fasting_glucose" value="Fasting glucose (mg%)" />
+            <Input
+              id="previous_fasting_glucose"
+              v-model="form.previous_fasting_glucose"
+              type="number"
+              class="mt-1 w-full"
+            />
+          </div>
+          <div class="col-span-1">
+            <Label for="previous_fasting_glucose_when" value="Measured at" />
+            <Input
+              id="previous_fasting_glucose_when"
+              v-model="form.previous_fasting_glucose_when"
+              type="text"
+              class="mt-1 w-full"
+              placeholder="MM/YY"
+            />
+          </div>
+          <div class="col-span-2">
+            <Label for="hba1c" value="Latest HbA1c (%)" />
             <Input id="hba1c" v-model="form.hba1c" type="number" class="mt-1 w-full" />
           </div>
           <div class="col-span-1">
@@ -972,6 +1098,14 @@ const importEmr = (data: {
       <FormSection>
         <template #title>Screening for complications</template>
         <template #form>
+          <div class="col-span-6">
+            <LabChartGrid
+              :patientId="patientId"
+              :noShadow="true"
+              :useProxy="true"
+              :onlyLabs="['705', '715']"
+            />
+          </div>
           <div class="col-span-6">
             <table class="w-full divide-y divide-gray-200">
               <thead>
@@ -1165,7 +1299,14 @@ const importEmr = (data: {
               {{
                 history
                   .filter(
-                    (h) => !h.checked && (form.sex == '0' || h.title != 'Gestational hypertension'),
+                    (h) =>
+                      !h.checked &&
+                      ![
+                        'Gestational hypertension',
+                        'Snoring',
+                        'Sugary diet',
+                        'Salty diet',
+                      ].includes(h.title),
                   )
                   .map((h) => h.title.toLowerCase())
                   .join(', ')
@@ -1173,14 +1314,16 @@ const importEmr = (data: {
             </p>
             <p>====== {{ form.dx_hypertension ? 'HYPERTENSION' : 'BLOOD PRESSURE' }} ======</p>
             <span v-if="form.office_sbp">
-              Office BP: {{ form.office_sbp }}/{{ form.office_dbp }} mmHg&ensp;
+              Office BP: {{ form.office_sbp }}/{{ form.office_dbp }} mmHg,
             </span>
             <span v-if="form.home_sbp">Home BP: {{ form.home_sbp }}/{{ form.home_dbp }} mmHg</span>
             <span v-else>Home BP not available.</span>
             <template v-if="form.dx_hypertension">
               <p v-if="form.hypotensive_symptoms">Complains of hypotensive symptoms.</p>
               <p v-else>Denies hypotensive symptoms.</p>
-              <p class="whitespace-pre-wrap">{{ form.note_hypertension }}</p>
+              <p v-if="form.note_hypertension" class="whitespace-pre-wrap">
+                {{ form.note_hypertension }}
+              </p>
               <div
                 v-if="
                   hypertension_drugs.filter((drug) => drug.previous_dose || drug.new_dose).length >
@@ -1211,61 +1354,65 @@ const importEmr = (data: {
               </div>
               <p v-else>No medication.</p>
             </template>
-            <template v-if="form.dx_dyslipidemia">
-              <p>==== DYSLIPIDEMIA/ASCVD RISK ====</p>
+            <div>
+              <p v-if="form.dx_dyslipidemia">==== DYSLIPIDEMIA/ASCVD RISK ====</p>
+              <p v-else>====== ASCVD PREVENTION ======</p>
               <p v-if="form.ldl">
-                Last lipid {{ form.lipid_when }}: LDL-C {{ form.ldl }}, TC
-                {{ form.total_cholesterol }} mg/dL
+                {{ form.lipid_when }} LDL-C
+                <span v-if="form.previous_ldl">{{ form.previous_ldl }} > </span>{{ form.ldl }}, TC
+                <span v-if="form.previous_total_cholesterol"
+                  >{{ form.previous_total_cholesterol }} > </span
+                >{{ form.total_cholesterol }} mg/dL
               </p>
               <p v-if="cvRisk.includes('%')">{{ cvRisk }}</p>
-              <p v-if="form.myopathy">Complains of myalgia.</p>
-              <p v-else>Denies myalgia or weakness.</p>
               <p>{{ form.note_dyslipidemia }}</p>
-              <p v-if="form.target_ldl">Target LDL: {{ form.target_ldl }}</p>
-              <div
-                v-if="
-                  dyslipidemia_drugs.filter((drug) => drug.previous_dose || drug.new_dose).length >
-                  0
-                "
-              >
-                Medications:
-                <ul>
-                  <template v-for="drug in dyslipidemia_drugs" :key="drug.name">
-                    <li v-if="drug.previous_dose || drug.new_dose">
-                      - {{ drug.name }}:
-                      <span v-if="drug.previous_dose != drug.new_dose">
-                        <template v-if="drug.previous_dose == '0' || drug.previous_dose == ''">
-                          start {{ drug.new_dose || '0' }}</template
-                        >
-                        <template v-else-if="drug.new_dose == '0' || drug.new_dose == ''">
-                          discontinue {{ drug.previous_dose || '0' }}</template
-                        >
-                        <template v-else
-                          >adjust from {{ drug.previous_dose || '0' }} to
-                          {{ drug.new_dose || '0' }}</template
-                        ></span
-                      ><span v-else>continue {{ drug.previous_dose || '0' }}</span>
-                      mg/day
-                    </li>
-                  </template>
-                </ul>
-              </div>
-              <p v-else>No medication.</p>
-            </template>
-            <template v-else-if="cvRisk.includes('%')">
-              <p>====== ASCVD PREVENTION ======</p>
-              <p>{{ cvRisk }}</p>
-              <p>{{ form.note_dyslipidemia }}</p>
-            </template>
-            <template v-if="form.dx_diabetes">
-              <p>==== TYPE II DIABETES MELLITUS ====</p>
-              <p v-if="form.hba1c">Last HbA1c {{ form.hba1c_when }}: {{ form.hba1c }}%</p>
+              <template v-if="form.dx_dyslipidemia">
+                <p v-if="form.myopathy">Complains of myalgia.</p>
+                <p v-else>Denies myalgia or weakness.</p>
+                <p v-if="form.target_ldl">{{ form.target_ldl }}</p>
+                <div
+                  v-if="
+                    dyslipidemia_drugs.filter((drug) => drug.previous_dose || drug.new_dose)
+                      .length > 0
+                  "
+                >
+                  Medications:
+                  <ul>
+                    <template v-for="drug in dyslipidemia_drugs" :key="drug.name">
+                      <li v-if="drug.previous_dose || drug.new_dose">
+                        - {{ drug.name }}:
+                        <span v-if="drug.previous_dose != drug.new_dose">
+                          <template v-if="drug.previous_dose == '0' || drug.previous_dose == ''">
+                            start {{ drug.new_dose || '0' }}</template
+                          >
+                          <template v-else-if="drug.new_dose == '0' || drug.new_dose == ''">
+                            discontinue {{ drug.previous_dose || '0' }}</template
+                          >
+                          <template v-else
+                            >adjust from {{ drug.previous_dose || '0' }} to
+                            {{ drug.new_dose || '0' }}</template
+                          ></span
+                        ><span v-else>continue {{ drug.previous_dose || '0' }}</span>
+                        mg/day
+                      </li>
+                    </template>
+                  </ul>
+                </div>
+                <p v-else>No medication.</p>
+              </template>
+            </div>
+            <template v-if="form.fasting_glucose || form.hba1c">
+              <p v-if="form.dx_diabetes">==== TYPE II DIABETES MELLITUS ====</p>
+              <p v-else-if="form.dx_prediabetes">====== PREDIABETES ======</p>
+              <p v-else>====== GLUCOSE SCREENING ======</p>
+              <p v-if="form.hba1c">HbA1c {{ form.hba1c_when }}: <span v-if="form.previous_hba1c">{{ form.previous_hba1c }} > </span>{{ form.hba1c }}%</p>
               <p v-if="form.fasting_glucose">
-                Last fasting glucose {{ form.fasting_glucose_when }}: {{ form.fasting_glucose }} mg%
+                Fasting glucose {{ form.fasting_glucose_when }}: <span v-if="form.previous_fasting_glucose">{{ form.previous_fasting_glucose }} > </span>{{ form.fasting_glucose }} mg%
               </p>
+              <p>{{ form.note_diabetes }}</p>
+              <template v-if="form.dx_diabetes || form.dx_prediabetes">
               <p v-if="form.hypoglycemic_symptoms">Complains of hypoglycemic symptoms.</p>
               <p v-else>Denies hypoglycemic symptoms.</p>
-              <p>{{ form.note_diabetes }}</p>
               <div
                 v-if="
                   diabetes_drugs.filter((drug) => drug.previous_dose || drug.new_dose).length > 0
@@ -1294,14 +1441,7 @@ const importEmr = (data: {
                 </ul>
               </div>
               <p v-else>No medication.</p>
-            </template>
-            <template v-else-if="form.fasting_glucose || form.hba1c">
-              <p>====== GLUCOSE SCREENING ======</p>
-              <p v-if="form.hba1c">Last HbA1c {{ form.hba1c_when }}: {{ form.hba1c }}%</p>
-              <p v-if="form.fasting_glucose">
-                Last fasting glucose {{ form.fasting_glucose_when }}: {{ form.fasting_glucose }} mg%
-              </p>
-              <p>{{ form.note_diabetes }}</p>
+              </template>
             </template>
             <template v-if="investigations.filter((i) => i.result).length > 0">
               <p>===== COMPLICATION SCREENING =====</p>

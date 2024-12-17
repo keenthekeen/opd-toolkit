@@ -8,7 +8,7 @@ const show = ref(false)
 
 <template>
   <img @click="show = true" :src="src" :alt="alt" class="max-w-full cursor-pointer" v-bind="$attrs" />
-  <Modal :show="show" @close="show = false">
+  <Modal :show="show" @close="show = false" max-width="4xl">
     <div class="p-4">
       <img :src="src" :alt="alt" class="w-full" />
     </div>

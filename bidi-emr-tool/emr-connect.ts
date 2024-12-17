@@ -30,7 +30,7 @@ export async function fetchEmr(sessionId: string, patientId?: string, hn?: strin
     weight: vitalsReport.match(/<weight>(\d+)<\/weight>/)?.[1],
   }
 
-  // LABS
+  // PREVIOUS LABS
   let labs: { itemId: string; name: string; date?: string; ordersId?: string }[] = [
     {
       name: 'Hemoglobin A1C',
@@ -84,7 +84,7 @@ export async function fetchEmr(sessionId: string, patientId?: string, hn?: strin
     patientId,
     sessionId,
   )
-  const labResult = [
+  let labResult = [
     { id: '868', name: 'Hemoglobin', itemId: '13247' },
     { id: '700', name: 'Glucose', itemId: '13139' },
     { id: '828', name: 'HbA1c', itemId: '13286' },
@@ -93,6 +93,8 @@ export async function fetchEmr(sessionId: string, patientId?: string, hn?: strin
     { id: '727', name: 'LDL', itemId: '13198' },
     { id: '725', name: 'Total cholesterol', itemId: '13198' },
     { id: '715', name: 'Potassium', itemId: '13186' },
+    { id: '723', name: 'AST', itemId: '13199' },
+    { id: '724', name: 'ALT', itemId: '13199' },
   ].map((item) => {
     const match = labsReport.match(
       new RegExp(
@@ -101,10 +103,34 @@ export async function fetchEmr(sessionId: string, patientId?: string, hn?: strin
       ),
     )
     return {
+      id: item.id,
       name: item.name,
       result: match?.[1],
       date: labs.find((lab) => lab.itemId === item.itemId)?.date,
     }
+  })
+
+  // TODAY LABS
+  let todayLabResponse = await fetchFromRemote(
+    'http://192.168.254.90/emrbidi/lab/main/labResultShow.php?showTab=T',
+    patientId,
+    sessionId,
+  )
+  todayLabResponse = todayLabResponse?.substring(3500, todayLabResponse.length - 4500)
+  labResult = labResult.map((item) => {
+    const match = todayLabResponse.match(
+      new RegExp(`'${item.id}'(?:.|\\s)+?txtBody\\w*?">((?:\\d|\\.)+)<\\/td>`, 'i'),
+    )
+    console.log(match?.[1])
+    return match?.[1]
+      ? {
+          ...item,
+          result: match?.[1],
+          date: 'today',
+          previous_result: item.result,
+          previous_date: item.date,
+        }
+      : item
   })
 
   // DRUG ORDERS
@@ -127,6 +153,7 @@ export async function fetchEmr(sessionId: string, patientId?: string, hn?: strin
         ...carry,
         {
           code: drug.code,
+          date: drug.dateOrder,
           result: `${drug.code} ${drug.name}\n${drug.dateOrder} ${drugLabel}; ${amount}x ${price}B`,
         },
       ]
