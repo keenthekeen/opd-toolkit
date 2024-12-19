@@ -78,9 +78,10 @@ watch(patientId, () => {
       <div class="mt-4 w-full">
         <Label for="patientId" :value="(patientIdType=='hn') ? 'HN' : 'Patient ID'" />
         <Input id="patientId" v-model.trim="patientId" type="number" class="w-full" autofocus />
-        <p class="mt-2 text-xs text-red-500">
+        <p v-if="errorMessage" class="mt-2 text-xs text-red-500">
           {{ errorMessage }}
         </p>
+        <p v-else class="mt-2 text-xs text-gray-500">Require running EMR connector on your computer.</p>
       </div>
     </div>
   </Modal>

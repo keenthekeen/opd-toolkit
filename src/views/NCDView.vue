@@ -47,6 +47,7 @@ const form = reactive({
   previous_fasting_glucose: '',
   previous_fasting_glucose_when: '',
   hypoglycemic_symptoms: false,
+  follow_up: '',
 })
 const patientId = ref('')
 const history = ref(
@@ -82,7 +83,7 @@ const diabetes_drugs = ref(
 const lifestyle_modifications = ref(
   STATIC.lifestyle_modifications.map((item) => ({
     ...item,
-    checked: item.checked ?? true,
+    checked: item.checked ?? false,
   })),
 )
 const investigations = ref(
@@ -485,6 +486,16 @@ const importEmr = (data: {
             <Label for="home_dbp" value="Home DBP" />
             <Input id="home_dbp" v-model="form.home_dbp" type="number" class="mt-1 w-full" />
           </div>
+          <div class="col-span-full">
+            <textarea
+              id="note_hypertension"
+              name="note_hypertension"
+              rows="2"
+              placeholder="Note"
+              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+              v-model="form.note_hypertension"
+            ></textarea>
+          </div>
           <template v-if="form.dx_hypertension">
             <div class="col-span-6 relative flex gap-x-3 items-center">
               <div class="flex h-6 items-center">
@@ -500,16 +511,6 @@ const importEmr = (data: {
                   >Hypotensive symptoms: Dizziness/syncope</label
                 >
               </div>
-            </div>
-            <div class="col-span-full">
-              <textarea
-                id="note_hypertension"
-                name="note_hypertension"
-                rows="2"
-                placeholder="Note"
-                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
-                v-model="form.note_hypertension"
-              ></textarea>
             </div>
             <div class="col-span-6">
               <span class="underline">Medications</span>
@@ -576,7 +577,7 @@ const importEmr = (data: {
                       <span :class="{ 'line-through': drug.available === false }">{{
                         drug.name
                       }}</span>
-                      <span v-if="drug.trade_name" class="mx-0.5">({{ drug.trade_name }})</span>
+                      <span v-if="drug.trade_name" class="mx-0.5 text-sm">({{ drug.trade_name }})</span>
                       <span class="ml-1 inline-block text-xs text-gray-400">{{
                         drug.description
                       }}</span>
@@ -826,7 +827,7 @@ const importEmr = (data: {
                     </td>
                     <td class="px-2 py-1">
                       {{ drug.name }}
-                      <span v-if="drug.trade_name" class="mx-0.5">({{ drug.trade_name }})</span>
+                      <span v-if="drug.trade_name" class="mx-0.5 text-sm">({{ drug.trade_name }})</span>
                       <span class="text-xs text-gray-400">{{ drug.description }}</span>
                       <p class="ml-1 inline-block text-sm text-blue-400 whitespace-pre-line">
                         {{ drug.emr_note }}
@@ -985,7 +986,10 @@ const importEmr = (data: {
               placeholder="MM/YY"
             />
           </div>
-          <div v-if="form.dx_diabetes" class="col-span-6 relative flex gap-x-3 items-center">
+          <div
+            v-if="form.dx_diabetes || form.dx_prediabetes"
+            class="col-span-6 relative flex gap-x-3 items-center"
+          >
             <div class="flex h-6 items-center">
               <input
                 id="hypoglycemic_symptoms"
@@ -1008,7 +1012,7 @@ const importEmr = (data: {
               v-model="form.note_diabetes"
             ></textarea>
           </div>
-          <template v-if="form.dx_diabetes">
+          <template v-if="form.dx_diabetes || form.dx_prediabetes">
             <div class="col-span-6">
               <span class="underline">Medications</span>
             </div>
@@ -1072,7 +1076,7 @@ const importEmr = (data: {
                         >{{ drug.group }}</span
                       >
                       {{ drug.name }}
-                      <span v-if="drug.trade_name" class="mx-0.5">({{ drug.trade_name }})</span>
+                      <span v-if="drug.trade_name" class="mx-0.5 text-sm">({{ drug.trade_name }})</span>
                       <span class="text-xs text-gray-400">{{ drug.description }}</span>
                       <p class="ml-1 inline-block text-sm text-blue-400 whitespace-pre-line">
                         {{ drug.emr_note }}
@@ -1212,26 +1216,25 @@ const importEmr = (data: {
             class="col-span-6"
             :class="{ 'print:hidden': !item.checked }"
           >
-            <div class="relative flex gap-x-3 items-center">
+            <label class="relative flex gap-x-3 items-center">
               <div class="flex items-center">
                 <input
-                  :id="item.id"
                   v-model="item.checked"
                   type="checkbox"
                   class="size-4 rounded border-gray-300 text-green-600 focus:ring-green-600"
                 />
               </div>
               <div class="text-sm/6">
-                <label :for="item.id" class="font-medium">
+                <p class="font-medium">
                   <span
                     v-if="item.for"
                     class="px-0.5 mr-1 text-xs text-gray-400 outline outline-1 outline-gray-400 rounded"
                     >{{ item.for }}</span
-                  >{{ item.title }}</label
+                  >{{ item.title }}</p
                 >
-                <p class="text-gray-500 print:hidden">{{ item.description }}</p>
+                <p class="text-xs text-gray-400 print:hidden">{{ item.description }}</p>
               </div>
-            </div>
+            </label>
           </div>
         </template>
       </FormSection>
@@ -1239,7 +1242,46 @@ const importEmr = (data: {
       <FormSection>
         <template #title>Investigations</template>
         <template #form>
-          <div class="col-span-6">
+          <fieldset class="col-span-full lg:col-span-2">
+            <Label for="" value="Follow up interval" />
+            <ul class="mt-2 space-y-2 text-sm">
+              <li>
+                <label class="flex items-center gap-x-3">
+                  <input
+                    v-model="form.follow_up"
+                    type="radio"
+                    value=""
+                    name="tag"
+                    class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 focus:ring-indigo-500 focus:ring-2"
+                  />
+                  <p>-</p>
+                </label>
+              </li>
+              <li
+                v-for="interval in [
+                  '6 months',
+                  '4 months',
+                  '3 months',
+                  '2 months',
+                  '6 weeks',
+                  '4 weeks',
+                  '2 weeks',
+                ]" :key="interval"
+              >
+                <label class="flex items-center gap-x-3">
+                  <input
+                    v-model="form.follow_up"
+                    type="radio"
+                    :value="interval"
+                    name="tag"
+                    class="w-4 h-4 text-indigo-600 bg-gray-100 border-gray-300 focus:ring-indigo-500 focus:ring-2"
+                  />
+                  <p>{{ interval }}</p>
+                </label>
+              </li>
+            </ul>
+          </fieldset>
+          <div class="col-span-full lg:col-span-4">
             <div
               v-for="(item, i) in investigations"
               :key="item.name"
@@ -1284,8 +1326,8 @@ const importEmr = (data: {
               >
             </p>
             <p>{{ form.note_general }}</p>
-            <p v-if="form.feeling_well">The patient is feeling well.</p>
-            <p v-if="history.filter((h) => h.checked).length > 0">
+            <span v-if="form.feeling_well">The patient is feeling well.</span>
+            <span v-if="history.filter((h) => h.checked).length > 0">
               Positive history of
               {{
                 history
@@ -1293,37 +1335,35 @@ const importEmr = (data: {
                   .map((h) => h.title.toLowerCase())
                   .join(', ')
               }}.
-            </p>
-            <p>
+            </span>
+            <span>
               Denies
               {{
                 history
                   .filter(
                     (h) =>
                       !h.checked &&
-                      ![
-                        'Gestational hypertension',
-                        'Snoring',
-                        'Sugary diet',
-                        'Salty diet',
+                      [
+                        'Exertional chest pain',
+                        'Occasional blurred vision',
                       ].includes(h.title),
                   )
                   .map((h) => h.title.toLowerCase())
                   .join(', ')
               }}.
-            </p>
+            </span>
             <p>====== {{ form.dx_hypertension ? 'HYPERTENSION' : 'BLOOD PRESSURE' }} ======</p>
             <span v-if="form.office_sbp">
               Office BP: {{ form.office_sbp }}/{{ form.office_dbp }} mmHg,
             </span>
             <span v-if="form.home_sbp">Home BP: {{ form.home_sbp }}/{{ form.home_dbp }} mmHg</span>
             <span v-else>Home BP not available.</span>
+            <p v-if="form.hypotensive_symptoms">Complains of hypotensive symptoms.</p>
+            <p v-else-if="form.dx_hypertension">Denies hypotensive symptoms.</p>
+            <p v-if="form.note_hypertension" class="whitespace-pre-wrap">
+              {{ form.note_hypertension }}
+            </p>
             <template v-if="form.dx_hypertension">
-              <p v-if="form.hypotensive_symptoms">Complains of hypotensive symptoms.</p>
-              <p v-else>Denies hypotensive symptoms.</p>
-              <p v-if="form.note_hypertension" class="whitespace-pre-wrap">
-                {{ form.note_hypertension }}
-              </p>
               <div
                 v-if="
                   hypertension_drugs.filter((drug) => drug.previous_dose || drug.new_dose).length >
@@ -1337,13 +1377,13 @@ const importEmr = (data: {
                       - {{ drug.name }}:
                       <span v-if="drug.previous_dose != drug.new_dose">
                         <template v-if="drug.previous_dose == '0' || drug.previous_dose == ''">
-                          start {{ drug.new_dose || '0' }}</template
+                          START {{ drug.new_dose || '0' }}</template
                         >
                         <template v-else-if="drug.new_dose == '0' || drug.new_dose == ''">
-                          discontinue {{ drug.previous_dose || '0' }}</template
+                          DISCONTINUE {{ drug.previous_dose || '0' }}</template
                         >
                         <template v-else
-                          >adjust from {{ drug.previous_dose || '0' }} to
+                          >ADJUST from {{ drug.previous_dose || '0' }} to
                           {{ drug.new_dose || '0' }}</template
                         ></span
                       ><span v-else>continue {{ drug.previous_dose || '0' }}</span>
@@ -1383,13 +1423,13 @@ const importEmr = (data: {
                         - {{ drug.name }}:
                         <span v-if="drug.previous_dose != drug.new_dose">
                           <template v-if="drug.previous_dose == '0' || drug.previous_dose == ''">
-                            start {{ drug.new_dose || '0' }}</template
+                            START {{ drug.new_dose || '0' }}</template
                           >
                           <template v-else-if="drug.new_dose == '0' || drug.new_dose == ''">
-                            discontinue {{ drug.previous_dose || '0' }}</template
+                            DISCONTINUE {{ drug.previous_dose || '0' }}</template
                           >
                           <template v-else
-                            >adjust from {{ drug.previous_dose || '0' }} to
+                            >ADJUST from {{ drug.previous_dose || '0' }} to
                             {{ drug.new_dose || '0' }}</template
                           ></span
                         ><span v-else>continue {{ drug.previous_dose || '0' }}</span>
@@ -1405,42 +1445,49 @@ const importEmr = (data: {
               <p v-if="form.dx_diabetes">==== TYPE II DIABETES MELLITUS ====</p>
               <p v-else-if="form.dx_prediabetes">====== PREDIABETES ======</p>
               <p v-else>====== GLUCOSE SCREENING ======</p>
-              <p v-if="form.hba1c">HbA1c {{ form.hba1c_when }}: <span v-if="form.previous_hba1c">{{ form.previous_hba1c }} > </span>{{ form.hba1c }}%</p>
+              <p v-if="form.hba1c">
+                HbA1c {{ form.hba1c_when }}:
+                <span v-if="form.previous_hba1c">{{ form.previous_hba1c }} > </span
+                >{{ form.hba1c }}%
+              </p>
               <p v-if="form.fasting_glucose">
-                Fasting glucose {{ form.fasting_glucose_when }}: <span v-if="form.previous_fasting_glucose">{{ form.previous_fasting_glucose }} > </span>{{ form.fasting_glucose }} mg%
+                Fasting glucose {{ form.fasting_glucose_when }}:
+                <span v-if="form.previous_fasting_glucose"
+                  >{{ form.previous_fasting_glucose }} > </span
+                >{{ form.fasting_glucose }} mg%
               </p>
               <p>{{ form.note_diabetes }}</p>
               <template v-if="form.dx_diabetes || form.dx_prediabetes">
-              <p v-if="form.hypoglycemic_symptoms">Complains of hypoglycemic symptoms.</p>
-              <p v-else>Denies hypoglycemic symptoms.</p>
-              <div
-                v-if="
-                  diabetes_drugs.filter((drug) => drug.previous_dose || drug.new_dose).length > 0
-                "
-              >
-                Medications:
-                <ul>
-                  <template v-for="drug in diabetes_drugs" :key="drug.name">
-                    <li v-if="drug.previous_dose || drug.new_dose">
-                      - {{ drug.name }}:
-                      <span v-if="drug.previous_dose != drug.new_dose">
-                        <template v-if="drug.previous_dose == '0' || drug.previous_dose == ''">
-                          start {{ drug.new_dose || '0' }}</template
-                        >
-                        <template v-else-if="drug.new_dose == '0' || drug.new_dose == ''">
-                          discontinue {{ drug.previous_dose || '0' }}</template
-                        >
-                        <template v-else
-                          >adjust from {{ drug.previous_dose || '0' }} to
-                          {{ drug.new_dose || '0' }}</template
-                        ></span
-                      ><span v-else>continue {{ drug.previous_dose || '0' }}</span>
-                      mg/day
-                    </li>
-                  </template>
-                </ul>
-              </div>
-              <p v-else>No medication.</p>
+                <p v-if="form.hypoglycemic_symptoms">Complains of hypoglycemic symptoms.</p>
+                <p v-else>Denies hypoglycemic symptoms.</p>
+                <div
+                  v-if="
+                    diabetes_drugs.filter((drug) => drug.previous_dose || drug.new_dose).length > 0
+                  "
+                >
+                  Medications:
+                  <ul>
+                    <template v-for="drug in diabetes_drugs" :key="drug.name">
+                      <li v-if="drug.previous_dose || drug.new_dose">
+                        - {{ drug.name }}:
+                        <span v-if="drug.previous_dose != drug.new_dose">
+                          <template v-if="drug.previous_dose == '0' || drug.previous_dose == ''">
+                            START {{ drug.new_dose || '0' }}</template
+                          >
+                          <template v-else-if="drug.new_dose == '0' || drug.new_dose == ''">
+                            DISCONTINUE {{ drug.previous_dose || '0' }}</template
+                          >
+                          <template v-else
+                            >ADJUST from {{ drug.previous_dose || '0' }} to
+                            {{ drug.new_dose || '0' }}</template
+                          ></span
+                        ><span v-else>continue {{ drug.previous_dose || '0' }}</span>
+                        mg/day
+                      </li>
+                    </template>
+                  </ul>
+                </div>
+                <p v-else>No medication.</p>
               </template>
             </template>
             <template v-if="investigations.filter((i) => i.result).length > 0">
@@ -1501,7 +1548,7 @@ const importEmr = (data: {
                 {{
                   lifestyle_modifications
                     .filter((i) => i.checked)
-                    .map((i) => i.title.toLowerCase())
+                    .map((i) => i.print)
                     .join(', ')
                 }}.
               </p>
@@ -1518,8 +1565,11 @@ const importEmr = (data: {
               <br />
             </template>
             <p v-if="form.home_sbp">- Home BP measurement 1 week before next visit</p>
-            <p v-if="form.dx_hypertension">- Advise observe hypotensive symptoms</p>
-            <p v-if="form.dx_diabetes">- Advise observe hypoglycemic symptoms</p>
+            <p v-if="form.dx_hypertension && form.dx_diabetes">
+              - Advise observe hypotensive-hypoglycemic symptoms
+            </p>
+            <p v-else-if="form.dx_hypertension">- Advise observe hypotensive symptoms</p>
+            <p v-else-if="form.dx_diabetes">- Advise observe hypoglycemic symptoms</p>
             <p
               v-if="
                 [...diabetes_drugs, ...hypertension_drugs, ...dyslipidemia_drugs].filter(
@@ -1538,7 +1588,7 @@ const importEmr = (data: {
             >
               - Continue unchanged home medications; emphasize benefits of drug adherence
             </p>
-            <p>- F/U OPD Med</p>
+            <p>- F/U OPD Med {{ form.follow_up }}</p>
             <template v-if="investigations.filter((item) => item.checked).length > 0">
               <p>
                 Lab next visit:

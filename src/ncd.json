@@ -301,35 +301,41 @@
       "id": "advice_weight",
       "for": "HT DLP DM",
       "title": "Weight reduction",
+      "print": "weight reduction",
       "description": "In overweight and obese individual; Target BMI 18.5-22.9 kg/m^2. Target waist circumference <90 cm (M) or <80 cm (W) or Ht/2."
     },
     {
       "id": "advice_diet",
       "for": "HT DLP",
       "title": "Regular consumption of healthy foods",
+      "print": "healthy foods",
       "description": "ข้าว 2 : ผัก 1 : เนื้อสัตว์ไม่ติดมัน 1 + ผลไม้หวานน้อย"
     },
     {
       "id": "advice_salt",
       "for": "HT",
       "title": "Limiting salt and sodium in food",
+      "print": "limit sodium",
       "description": "WHO กำหนดปริมาณโซเดียมไม่เกิน 2 g/day = NaCl 1 teaspoon = Fish sauce/MSG 4 teaspoon"
     },
     {
       "id": "advice_sugar",
       "for": "DM",
-      "title": "Avoid sugar"
+      "title": "Avoid sugar",
+      "print": "avoid sugar"
     },
     {
       "id": "advice_fatty_diet",
       "for": "LDL",
       "title": "Limiting saturated fatty acid in food",
+      "print": "avoid saturated fat",
       "description": "ลดการบริโภคพลังงานจากไขมันที่มีกรดไขมันอิ่มตัวสูง เช่น ไขมันสัตว์ น้ำมันหมู น้ำมัน ปาล์ม น้ำมันมะพร้าว เนย / เปลี่ยนเป็นน้ำมันมะกอก น้ำมันรำข้าว น้ำมันถั่วเหลือง เป็นต้น"
     },
     {
       "id": "advice_carbohydrate",
       "for": "TG",
       "title": "Limiting carbohydrate",
+      "print": "limit carbohydrate",
       "description": "ลดการบริโภคอาหารกลุ่มคาร์โบไฮเดรต / ลดการบริโภคน้ำตาลลงให้ไม่เกินร้อยละ 10 ของพลังงานที่บริโภคต่อวัน",
       "checked": false
     },
@@ -337,6 +343,7 @@
       "id": "advice_alcohol",
       "for": "HT TG",
       "title": "Limiting alcoholic beverages",
+      "print": "limit alcohols",
       "description": "ถ้าดื่มอยู่แล้วควรจำกัดปริมาณ ไม่เกิน 1-2 หน่วย/วัน (1 standard drink = 10 g alcohol)",
       "checked": false
     },
@@ -344,12 +351,14 @@
       "id": "advice_exercise",
       "for": "HT DLP",
       "title": "Increasing regular physical activity and/or aerobic exercise",
+      "print": "increase exercise",
       "description": "ควรออกกำลังกายแบบแอโรบิก อย่างน้อยสัปดาห์ละ 5 วัน: ปานกลาง 150 min/week หรือ หนักมาก 75-90 min/week, ไม่ควร isometric exercise เช่นยกน้ำหนัก ถ้ายังไม่รักษา/ความดันสูงมาก/etc."
     },
     {
       "id": "smoking",
       "for": "HT DLP",
-      "title": "Stop Smoking",
+      "title": "Quit Smoking",
+      "print": "quit smoking",
       "description": "ช่วยลด CV risk, รับคำแนะนำ โทรสายด่วนเลิกบุหรี่ 1600",
       "checked": false
     }
@@ -427,6 +436,10 @@
     {
       "name": "Foot exam",
       "description": "q 1 year; for DM"
+    },
+    {
+      "name": "Creatine kinase",
+      "description": "not routinely indicated"
     }
   ],
   "vaccines": [
