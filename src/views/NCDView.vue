@@ -264,6 +264,9 @@ const importEmr = (data: {
     })
   })
 }
+const today = new Date();
+// todayStr in DD/MM/YYYY format
+const todayStr = `${today.getMonth() + 1}/${today.getFullYear()-1957}`;
 </script>
 
 <template>
@@ -718,9 +721,10 @@ const importEmr = (data: {
               id="lipid_when"
               v-model="form.lipid_when"
               type="text"
-              class="mt-1 w-full"
+              class="mt-1"
               placeholder="MM/YY"
             />
+            <span @click="form.lipid_when = todayStr" class="ml-0.5 text-gray-300 cursor-pointer">T</span>
           </div>
           <div v-if="form.dx_dyslipidemia" class="col-span-2 relative flex gap-x-3 items-center">
             <div class="flex h-6 items-center">
@@ -963,9 +967,10 @@ const importEmr = (data: {
               id="hba1c_when"
               v-model="form.hba1c_when"
               type="text"
-              class="mt-1 w-full"
+              class="mt-1 max-w-full"
               placeholder="MM/YY"
             />
+            <span @click="form.hba1c_when = todayStr" class="ml-0.5 text-gray-300 cursor-pointer">T</span>
           </div>
           <div class="col-span-2">
             <Label for="fasting_glucose" value="Fasting glucose (mg%)" />
@@ -982,9 +987,10 @@ const importEmr = (data: {
               id="fasting_glucose_when"
               v-model="form.fasting_glucose_when"
               type="text"
-              class="mt-1 w-full"
+              class="mt-1 max-w-full"
               placeholder="MM/YY"
             />
+            <span @click="form.fasting_glucose_when = todayStr" class="ml-0.5 text-gray-300 cursor-pointer">T</span>
           </div>
           <div
             v-if="form.dx_diabetes || form.dx_prediabetes"
@@ -1101,6 +1107,13 @@ const importEmr = (data: {
       <SectionBorder />
       <FormSection>
         <template #title>Screening for complications</template>
+        <template #description>
+          <p class="underline">Quick words</p>
+          <p class="font-mono select-all">today</p>
+          <p class="font-mono select-all">normal</p>
+          <p class="font-mono select-all">no active pulmonary infiltration</p>
+          <p class="font-mono select-all">normal sinus, rate /min</p>
+        </template>
         <template #form>
           <div class="col-span-6">
             <LabChartGrid
@@ -1142,6 +1155,7 @@ const importEmr = (data: {
                     </td>
                     <td class="px-2 py-1">
                       <Input v-model="item.when" type="text" class="h-8 max-w-28" />
+                      <span @click="item.when = todayStr" class="ml-0.5 text-gray-300 cursor-pointer">T</span>
                     </td>
                     <td class="px-2 py-1">
                       <Input v-model="item.result" type="text" class="h-8 w-full" />
